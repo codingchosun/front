@@ -1,0 +1,57 @@
+.SignIn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 5px;
+    gap: 1px;
+    width: 100%;
+    max-width: 500px;
+    margin: 10px auto;
+}
+
+.SignIn img {
+    width: 250px;
+    height: 250px;
+}
+
+.SignIn input{
+    font-size: 15px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+.SignIn button{
+    width: auto;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #2659e7f9;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.SignIn div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.SignIn button[type="Submit"]{
+    width: 100%;
+    margin-bottom: 5%;
+    padding: 15px;
+}
+.SignIn button[type="button"]{
+    width: 32%;
+    margin-right: 1%;
+    margin-bottom: 10%;
+    padding: 15px;
+}

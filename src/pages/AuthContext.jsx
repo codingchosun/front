@@ -1,8 +1,8 @@
-import { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 const AuthContext=createContext();
 export const AuthProvider=({children}) => {
-    const [isLogin,setIsLogin]=useState(false);
+    const [isLogin,setIsLogin]=useState(true); //테스트를 위해 기본값을 true로 설정
     const login=()=>{
         setIsLogin(true);
     }

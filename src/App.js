@@ -11,23 +11,24 @@ import Main from "./pages/Main";
 import FindId from "./pages/FindId";
 import FindPw from "./pages/FindPw";
 import MyPage from "./pages/MyPage";
-
+import NewPost from "./pages/Newpost";
 function App() {
-  return (
+    return (
       // {로고, 로그인(로그아웃) 버튼, 마이페이지 버튼}
-          <AuthProvider>
+        <AuthProvider>
             <Routes>
-              <Route path="/" element={<Main/>}/>
-              <Route path="/main" element={<Main/>}/>
-              <Route path="/login" element={<Login/>}/>
-              <Route path="/signup" element={<SignUp/>}/>
-              <Route path="/votepage" element={<VotePage/>}/>
-              <Route path="/findid" element={<FindId/>}/>
-              <Route path="/findpw" element={<FindPw/>}/>
-              <Route path="/mypage" element={<MyPage/>}/>
-          </Routes>
-          </AuthProvider>
-  );
+                <Route path="/" element={<Main/>}/>
+                <Route path="/main" element={<Main/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
+                <Route path="/votepage" element={<VotePage/>}/>
+                <Route path="/findid" element={<FindId/>}/>
+                <Route path="/findpw" element={<FindPw/>}/>
+                <Route path="/mypage" element={<MyPage/>}/>
+                <Route path="/newpost" element={<NewPost/>}/>
+            </Routes>
+            </AuthProvider>
+    );
 }
 
 export default App;

@@ -1,54 +1,54 @@
-.findId {
+.find-id {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: white;
-    width:100%;
+    width: 100%;
     max-width: 600px;
-    padding:10px;
-    margin:10px auto;
+    padding: 10px;
+    margin: 10px auto;
     border: 1px solid #000000;
     border-radius: 5px;
 }
 
-.findId h1 {
+.find-id__title {
     margin-bottom: 10px;
     font-size: 20px;
 }
 
-.findId button {
+.find-id__button {
     padding: 10px 20px;
     margin-top: 10px;
     font-size: 14px;
     cursor: pointer;
 }
 
-.findId button[disabled] {
+.find-id__button[disabled] {
     cursor: not-allowed;
-    background-color: #ccc;
+    background-color: #374051;
 }
 
-.findIdForm {
+.find-id__form-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
     width: 100%;
 }
 
-.findIdForm label{
+.find-id__label {
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.findIdForm input {
+.find-id__input {
     font-size: 12px;
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
 }
 
-.foundId {
+.find-id__found-id {
     margin: 10px;
     font-size: 12px;
     font-weight: bold;

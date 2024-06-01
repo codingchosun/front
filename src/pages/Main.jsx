@@ -69,8 +69,8 @@ const Main = () => {
     const fetchPosts = async () => {
         try {
             const url = isLogin
-                ? `http://localhost:8090/posts/login?page=1&size=2`
-                : `http://localhost:8090/posts?page=1&size=2`;
+                ? `http://localhost:8090/posts/login?page=1&size=5`
+                : `http://localhost:8090/posts?page=1&size=5`;
             const response = await axios.get(url, {
                 withCredentials: true
             });

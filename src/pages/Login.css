@@ -1,57 +1,62 @@
-.SignIn {
+.login {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: white;
+    background-color: #F6F4F1;
     padding: 10px;
     border: 1px solid;
     border-radius: 5px;
     gap: 1px;
-    width: 100%;
-    max-width: 500px;
+    width: 700px;
     margin: 10px auto;
 }
 
-.SignIn img {
-    width: 250px;
-    height: 250px;
-}
-
-.SignIn input{
-    font-size: 15px;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-}
-
-.SignIn button{
-    width: auto;
-    padding: 12px;
-    font-size: 16px;
-    color: white;
-    background-color: #2659e7f9;
-    border:none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.SignIn div {
-    width: 100%;
+.login__form {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
+    width: 600px;
 }
-.SignIn button[type="Submit"]{
+
+.login__form-group {
+    margin-bottom: 10px;
+}
+
+.login__form-group label {
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.login__form-group input {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #000000;
     width: 100%;
-    margin-bottom: 5%;
-    padding: 15px;
+    box-sizing: border-box;
 }
-.SignIn button[type="button"]{
-    width: 32%;
-    margin-right: 1%;
-    margin-bottom: 10%;
+
+.login__button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+}
+
+.login__button{
     padding: 15px;
+    font-size: 14px;
+    color: white;
+    background-color: #1F1122;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+}
+
+.login__button:hover {
+    background-color: #374051;
 }

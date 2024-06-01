@@ -1,0 +1,49 @@
+.manage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+.manage-container h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.participants-list {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.participants-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.participant-name {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.participant-score {
+    flex: 0.5;
+    text-align: right;
+    margin-left: 10px;
+}
+
+.expel-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

@@ -1,20 +1,36 @@
-import { createContext, useState, useContext } from "react";
+// 로그인 데이터 유지용 컨텍스트
+import React, { createContext, useState, useContext, useEffect } from "react";
 
-const AuthContext=createContext();
-export const AuthProvider=({children}) => {
-    const [isLogin,setIsLogin]=useState(false);
-    const login=()=>{
+const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
+
+export const AuthProvider = ({ children }) => {
+    const [isLogin, setIsLogin] = useState(() => {
+        const storedLoginStatus = localStorage.getItem('isLogin');
+        return storedLoginStatus === 'true';
+    });
+
+    const [userId, setUserId] = useState(() => localStorage.getItem('userId'));
+
+    const login = (id) => {
+        console.log("유저:",id)
         setIsLogin(true);
-    }
-    const logout=() =>{
-        setIsLogin(false);
-    }
+        setUserId(id);
+        localStorage.setItem('isLogin', 'true');
+        localStorage.setItem('userId', id);
+    };
 
-    return(
-        <AuthContext.Provider value={{isLogin, login, logout }}>
+    const logout = () => {
+        setIsLogin(false);
+        setUserId(null);
+        localStorage.removeItem('isLogin');
+        localStorage.removeItem('userId');
+    };
+
+    return (
+        <AuthContext.Provider value={{ isLogin, login, logout, userId }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
-export const useAuth=()=>useContext(AuthContext);

@@ -1,129 +1,130 @@
-import React,{ useState } from 'react';
-import { Link, useNavigate} from "react-router-dom";
+// 메인페이지
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import axios from "axios";
 import "./Main.css";
-import logo from "../images/로고.png";
-import imgGame from "../images/게임.jpg";
-import imgCat from "../images/고양이.jpg";
-import imgHealth from "../images/헬스.jpg";
-import imgBoardgame from "../images/보드게임.jpg";
-// 헤더 부분은 로고, 로그인(로그아웃)버튼, 회원가입 버튼이 존재
-const Header = () => {
-    const { isLogIn, logout } = useAuth();
+import cat from "../images/고양이.jpg";
 
-    return(
-      <div className="header">
-          <div className="logoContainer">
-            <Link to="/main">
-          <img src={logo}
-               className="logo"
-               alt={logo}/>
-            </Link>
-          </div>
-        { isLogIn ? (
-            <button onClick={logout}>로그아웃</button>
-        ): (
-            <div>
-              <Link to="/login"><button>로그인</button></Link>
-              <Link to="/signup"><button>회원가입</button></Link>
-            </div>
-        )}
-      </div>
-  );
+const SearchBar = ({ handleSearch, searchMeeting, setSearchMeeting }) => {
+    return (
+        <div className="main__search-bar">
+            <input
+                type="text"
+                value={searchMeeting}
+                onChange={(e) => setSearchMeeting(e.target.value)}
+                placeholder="검색어를 입력하세요"
+            />
+            <button onClick={() => handleSearch(searchMeeting)}>검색</button>
+        </div>
+    );
 };
 
-const SearchBar = ({handleSearch, searchMeeting, setSearchMeeting }) => {
-  return (
-      <div className="searchBar">
-        <input
-            type="text"
-            value={searchMeeting}
-            onChange={(e)=>setSearchMeeting(e.target.value)}
-            placeholder="검색어를 입력하세요"
-        />
-        <button onClick={ () => handleSearch(searchMeeting)}>검색</button>
-      </div>
-  );
+const Hashtags = ({ hashtags }) => {
+    return (
+        <div className="main__hashtags">
+            {hashtags.map((tag) => (
+                <div key={tag.hashtag_id}>{tag.hashtag_name}</div>
+            ))}
+        </div>
+    );
 };
 
-//해쉬태그창
-const Hashtags=({hashtag}) => {
-  return(
-      <div className="hashtags">
-        { hashtag.map(tag =>
-                <div key={tag}>#{tag}</div>
-        )}
-      </div>
-  );
+const Posts = ({ posts }) => {
+    console.log('게시물:', posts);
+
+    if (posts.length === 0) {
+        return <div className="main__posts-empty">게시물이 없습니다.</div>;
+    }
+
+    return (
+        <div className="main__posts">
+            {posts.map((post) => (
+                <div key={post.id} className="main__post">
+                    {post.path ? (
+                        <img src={`http://localhost:8090${post.path}`} alt="post" className="main__post-default" />
+                    ) : (
+                        <img src={cat} alt="default" className="main__post-default" />
+                    )}
+                    <div className="main__post-content">
+                        <div className="main__post-id"># {post.id}</div>
+                        <div className="main__post-title">제목: {post.title}</div>
+                        <div className="main__post-content">내용: {post.contents}</div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 };
 
-//게시물
-const Posts=({posts}) =>{
-  return (
-      <div className="posts">
-        {posts.map(post =>(
-            <div
-                key={post.id}
-                className="post"
-            >
-              <img src={post.image} alt={post.content} />
-              <p>{post.content}</p>
-            </div>
-        ))}
-      </div>
-  );
-};
 const Main = () => {
-    const {isLogin} = useAuth();
-    const navigate=useNavigate();
-    const [searchMeeting, setSearchMeeting]=useState('');
-  const handleSerch = (e) => {
-    console.log("검색내용: ",e);
-  };
-  const hashtag=['해쉬태그1','해쉬태그2','해쉬태그3'];
-  const posts=[{
-    id:1,
-    image: imgGame,
-    content: '게시물 내용1'
-  },{
-    id:2,
-    image:imgCat,
-    content: '게시물 내용2'
-  },{
-      id:3,
-      image:imgHealth,
-      content: '게시물 내용3'
-  },{
-    id:4,
-    image:imgBoardgame,
-    content: '게시물 내용4'
-}];
+    const { isLogin } = useAuth();
+    const [searchMeeting, setSearchMeeting] = useState('');
+    const [posts, setPosts] = useState([]);
+    const [hashtags, setHashtags] = useState([]);
 
-  return (
-      <div>
-        <Header/>
-          <div className="mainpages">
-              {isLogin ? (
-                  <>
-                      <SearchBar
-                          handleSearch={handleSerch}
-                          searchMeeting={searchMeeting}
-                          setSearchMeeting={setSearchMeeting}
-                      />
-                      <Hashtags hashtag={hashtag}/>
-                      <Posts posts={posts}/>
-                  </>
-              ) : (
-                  <div className="loginCondition">
-                       <h1>로그인이 필요합니다</h1>
-                      <Link to="/login">
-                          <button>로그인 페이지 이동 </button>
-                      </Link>
-                  </div>
-              )}
-          </div>
-    </div>
-  );
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const fetchPosts = async () => {
+        try {
+            const url = isLogin
+                ? `http://localhost:8090/posts/login?page=1&size=2`
+                : `http://localhost:8090/posts?page=1&size=2`;
+            const response = await axios.get(url, {
+                withCredentials: true
+            });
+
+            console.log('Response data:', response.data);
+
+            const postResponses = isLogin
+                ? response.data.login_posts_responses
+                : response.data.no_login_posts_responses;
+            const hashtagDtoList = response.data.hashtag_dto_list;
+
+            console.log('게시물 내용:', postResponses.content);
+            console.log('해시태그:', hashtagDtoList);
+
+            setPosts(postResponses.content);
+            setHashtags(hashtagDtoList);
+        } catch (error) {
+            console.error('게시물 에러:', error);
+        }
+    };
+
+    useEffect(() => {
+        console.log('isLogin:', isLogin);
+        console.log('location.state:', location.state);
+        fetchPosts();
+
+        if (location.state && location.state.newPostId) {
+            fetchPosts();
+            window.history.replaceState({}, document.title); // Clear the state
+        }
+    }, [isLogin, location.state]);
+
+    const handleSearch = (searchTerm) => {
+        console.log("검색내용: ", searchTerm);
+    };
+
+    const handleNewPost = () => {
+        navigate('/newpost');
+    };
+
+    return (
+        <div className="main">
+            <div className="main-page">
+                <SearchBar
+                    handleSearch={handleSearch}
+                    searchMeeting={searchMeeting}
+                    setSearchMeeting={setSearchMeeting}
+                />
+                    <Hashtags hashtags={hashtags} />
+                    <button onClick={handleNewPost} className="main__newpost-button">글 작성</button>
+                    <Posts posts={posts} />
+            </div>
+        </div>
+    );
 };
 
 export default Main;

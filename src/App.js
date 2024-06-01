@@ -29,6 +29,7 @@ function App() {
                     <Route path="/main" element={<Main/>}/> {/*메인 페이지*/}
                     <Route path="/login" element={<Login/>}/> {/*로그인 페이지*/}
                     <Route path="/register" element={<Register/>}/> {/*회원가입 페이지*/}
+
                     {/*<Route path="/votepage" element={<VotePage/>}/> /!*투표 페이지*!/*/}
                     <Route path="/findid" element={<FindId/>}/> {/*아이디찾기 페이지*/}
                     <Route path="/findpw" element={<FindPw/>}/> {/*비밀번호찾기 페이지*/}

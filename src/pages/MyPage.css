@@ -1,4 +1,4 @@
-/*페이지 전체*/
+/* 페이지 전체 */
 .mypageContainer {
     display: flex;
     flex-direction: column;
@@ -11,156 +11,191 @@
     border: 1px solid #000000;
     border-radius: 5px;
     margin: 10px auto;
+    padding: 20px;
 }
-/*자기소개*/
+
+/* 자기소개 */
 .introductionContainer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-.introductionContainer label{
+.introductionContainer label {
     display: block;
-    align-items: center;
-    margin-bottom: 1px;
+    margin-bottom: 5px;
 }
 
-.introductionContainer input {
-    font-size: 12px;
-    margin-bottom: 1px;
-}
-
-.introductionContainer button {
-    margin-top:10px;
-    margin-left: 10px;
-    white-space: nowrap;
-}
-
-/*자기소개 입력창*/
-.introductionInput{
+.introductionInput {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
-.introductionInput input{
-    font-size:12px;
-    margin-top:10px;
-    height:20px;
-    width: 400px;
+.introductionInput input {
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
     max-width: 500px;
 }
 
 .introductionInput button {
+    margin-top: 10px;
     padding: 10px;
-    margin-left: 10px;
-    height: 40px;
-    white-space: nowrap;
+    width: auto;
 }
-/*이메일*/
-.emailContainer{
+
+/* 이메일 */
+.emailContainer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-.emailContainer label{
+.emailContainer label {
     display: block;
-    align-items: center;
-    margin-bottom: 1px;
+    margin-bottom: 5px;
 }
 
 .emailInput {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
 .emailInput input {
-    font-size: 12px;
-    margin-top: 10px;
-    height: 20px;
-    width: 400px;
-}
-
-.emailInput button {
+    font-size: 14px;
+    margin-top: 5px;
     padding: 10px;
-    margin-left: 10px;
-}
-
-/*매너점수*/
-.mannerScore{
-    width:100%;
+    width: 100%;
     max-width: 500px;
-    margin: 5px 0;
 }
 
-.mannerFigure{
-    width:100%;
+/* 매너점수 */
+.mannerScore {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px 0;
+}
+
+.mannerScore label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.mannerFigure {
+    width: 100%;
     height: 30px;
-    background-color: #f3f3f3; /*안쪽 색깔*/
+    background-color: #f3f3f3;
     border: 2px dotted;
     border-radius: 5px;
-    overflow:hidden;
+    overflow: hidden;
 }
 
-.mannerFill{
+.mannerFill {
     height: 100%;
-    background-color: #fefd48; /*바깥쪽 색깔*/
+    background-color: #fefd48;
     text-align: right;
     padding-right: 10px;
     line-height: 30px;
     color: black;
     font-weight: bold;
-    font-size:16px;
+    font-size: 16px;
     border: 1px dotted;
-
 }
 
-/*해쉬태그*/
-.hashtagContainer{
+/* 해쉬태그 */
+.hashtagContainer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
-    margin: 10px 0;
+    margin: 20px 0;
+    width: 100%;
 }
+
 .hashtagContainer label {
     display: block;
-    align-items: center;
+    margin-bottom: 5px;
 }
 
 .hashtagInput {
     display: flex;
     flex-direction: row;
-    font-size: 12px;
-    width: 500px;
-    gap:10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
 }
+
 .hashtagInput input {
     padding: 10px;
-    height: 20px;
-
+    height: 30px;
+    flex: 1;
+    min-width: 150px;
 }
+
 .hashtagContainer button {
     padding: 5px 10px;
-    font-size: 12px;
+    font-size: 14px;
     white-space: nowrap;
     height: 40px;
+    margin-top: 10px;
 }
 
-.hashtagLabel{
+/* 템플릿 */
+.templateContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.templateContainer label {
     display: block;
+    margin-bottom: 5px;
 }
 
+.templateInput {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.templateInput input {
+    padding: 10px;
+    height: 30px;
+    flex: 1;
+    min-width: 150px;
+}
+
+/* 버튼 컨테이너 */
 .buttonContainer {
     display: flex;
     flex-direction: row;
     margin-bottom: 10px;
-    gap:10px;
+    gap: 10px;
 }
+
 .buttonContainer button {
-    padding: 10px 10px;
-    font-size: 12px;
+    padding: 10px 20px;
+    font-size: 14px;
     white-space: nowrap;
+    border: none;
+    border-radius: 5px;
+    background-color: #1F1122;
+    color: white;
+    cursor: pointer;
+}
+
+.buttonContainer button:hover {
+    background-color: #374051;
 }

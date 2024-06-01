@@ -1,0 +1,33 @@
+.header {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #FFFFFF;
+    border-bottom: 3px solid #1F1122;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    background-color: white;
+    border: 3px solid #1F1122;
+    border-radius: 5px;
+}
+
+.header button {
+    margin-left: 10px;
+    background-color: #1F1122;
+    border: none;
+    border-radius: 5px;
+}
+
+.header button:hover {
+    background-color: #374051;
+}
+
+.header .headerButton{
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}

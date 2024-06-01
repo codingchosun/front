@@ -1,0 +1,55 @@
+.findPw {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin: 20px auto;
+}
+
+.findPw h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.findPwForm {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.findPwForm label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.findPwForm input {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.findPw button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.findPw button[disabled] {
+    cursor: not-allowed;
+    background-color: #ccc;
+}
+
+.foundId {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}

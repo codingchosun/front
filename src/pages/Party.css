@@ -1,0 +1,47 @@
+.party-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.party-details {
+    flex: 1;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.party-info {
+    margin-top: 20px;
+}
+
+.party-thumbnail {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px 0;
+}
+
+.party-participants {
+    flex: 0.5;
+    padding-left: 20px;
+}
+
+.party-participants h2 {
+    margin-bottom: 20px;
+}
+
+.party-participants ul {
+    list-style: none;
+    padding: 0;
+}
+
+.party-participants li {
+    padding: 5px 0;
+}
+
+.party-participants button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+}

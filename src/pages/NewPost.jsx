@@ -36,9 +36,9 @@ const NewPost = () => {
         formData.append('start_time', date.toISOString());
         formData.append('hash_list', JSON.stringify(hashtagsArray));
 
-        images.forEach((image, index) => {
-            formData.append(`images[${index}]`, image);
-        });
+        // images.forEach((image, index) => {
+        //     formData.append(`images[${index}]`, image);
+        // });
 
         try {
             const response = await axios.post('http://localhost:8090/posts/register', formData, {

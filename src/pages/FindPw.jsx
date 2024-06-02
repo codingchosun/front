@@ -1,66 +1,88 @@
-// 비밀번호 찾기 페이지
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./FindPw.css";
-import Header from "./Header";
+
 const FindPw = () => {
-    const [id, setId] = useState("");
+    const [loginId, setloginId] = useState("");
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [foundPw, setFoundPw] = useState(null);
     const navigate = useNavigate();
 
-    //비밀번호 찾기
     const handleFindPw = async (e) => {
         e.preventDefault();
+        console.log("Sending request with:", { name, email, loginId });
         try {
-            const response = await fetch('http://localhost:8090/api/user/find-pw', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id, email }),
+            const response = await axios.post('http://localhost:8090/findpassword', {
+                name, email, loginId
             });
-            if (response.ok) {
+            if(response.status === 200 && response.data.success) {
+                const data = response.data.body;
+                console.log("비밀번호찾기 데이터: ", response.data);
+                setFoundPw(data);
                 alert('비밀번호 찾기에 성공하였습니다');
-                navigate('/login');
             } else {
-                alert('비밀번호 찾기에 실패했습니다');
+                alert('비밀번호를 찾을 수 없습니다');
             }
         } catch (error) {
-            console.error("Error:", error);
+            console.error("통신에러:", error);
         }
     };
 
     const handleCancel = () => {
-        navigate('/login');
+        navigate('/');
     };
-    return(
-        <div>
-            <div className="findPw">
-                <h1>비밀번호 찾기</h1>
-                <form onSubmit={handleFindPw}>
-                    <div className="findPwForm">
-                        <label>아이디</label>
-                        <input
-                            type="text"
-                            value={id}
-                            onChange={(e) => setId(e.target.value)}
-                            placeholder="아이디를 입력하세요"
-                            required
-                        />
+
+    return (
+        <div className="find-pw">
+            <h1 className="find-pw__title">비밀번호 찾기</h1>
+            <form className="find-pw__form" onSubmit={handleFindPw}>
+                <div className="find-pw__form-group">
+                    <label className="find-pw__label">이름</label>
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="이름을 입력하세요"
+                        required
+                        className="find-pw__input"
+                    />
+                </div>
+                <div className="find-pw__form-group">
+                    <label className="find-pw__label">이메일</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="이메일을 입력하세요"
+                        required
+                        className="find-pw__input"
+                    />
+                </div>
+                <div className="find-pw__form-group">
+                    <label className="find-pw__label">아이디</label>
+                    <input
+                        type="text"
+                        value={loginId}
+                        onChange={(e) => setloginId(e.target.value)}
+                        placeholder="아이디를 입력하세요"
+                        required
+                        className="find-pw__input"
+                    />
+                </div>
+
+                <div className="find-pw__buttons">
+                    <button type="submit" className="find-pw__button">비밀번호 찾기</button>
+                    <button type="button" className="find-pw__button" onClick={handleCancel}>취소</button>
+                </div>
+            </form>
+            <div className="find-pw__result">
+                {foundPw && (
+                    <div className="find-pw__found-pw">
+                        <h2 className="find-pw__found-pw-text">찾은 비밀번호: {foundPw}</h2>
                     </div>
-                    <div className="findPwForm">
-                        <label>이메일</label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="이메일을 입력하세요"
-                            required
-                        />
-                    </div>
-                    <button type="submit">비밀번호 찾기</button>
-                    <button type="button" onClick={handleCancel}>취소</button>
-                </form>
+                )}
             </div>
         </div>
     );

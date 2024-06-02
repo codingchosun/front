@@ -41,16 +41,19 @@ const MyPage = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            const response = await axios.delete(`http://localhost:8090/profile/${userId}`, { withCredentials: true });
-            if (response.status === 200) {
+            const response = await axios.get(`http://localhost:8090/deleteAccount`, { withCredentials: true });
+            const data = response.data;
+            if (data.success) {
                 alert('회원탈퇴가 완료되었습니다');
+                console.log(data.body);
                 logout();
-                navigate('/');
+                navigate('/main');
             } else {
                 alert('회원탈퇴 실패.');
             }
         } catch (error) {
             console.error("회원탈퇴 에러:", error);
+            alert('회원탈퇴 에러 발생.');
         }
     };
 
@@ -122,7 +125,7 @@ const MyPage = () => {
             </div>
 
             <div className="buttonContainer">
-                <Link to="/">
+                <Link to="/useredit">
                     <button>수정페이지</button>
                 </Link>
                 <Link to="/party">

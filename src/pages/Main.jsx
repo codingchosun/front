@@ -6,7 +6,12 @@ import axios from "axios";
 import "./Main.css";
 import cat from "../images/고양이.jpg";
 
-const SearchBar = ({ handleSearch, searchMeeting, setSearchMeeting }) => {
+const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
+    const navigate=useNavigate();
+
+    const handleSearch = () => {
+        navigate('/search', { state: { searchTerm: searchMeeting } });
+    }
     return (
         <div className="main__search-bar">
             <input
@@ -15,7 +20,7 @@ const SearchBar = ({ handleSearch, searchMeeting, setSearchMeeting }) => {
                 onChange={(e) => setSearchMeeting(e.target.value)}
                 placeholder="검색어를 입력하세요"
             />
-            <button onClick={() => handleSearch(searchMeeting)}>검색</button>
+            <button onClick={handleSearch}>검색</button>
         </div>
     );
 };
@@ -31,7 +36,10 @@ const Hashtags = ({ hashtags }) => {
 };
 
 const Posts = ({ posts }) => {
-    console.log('게시물:', posts);
+    const navigate=useNavigate();
+    const handlePostClick = (postId) => {
+        navigate('/party', { state: { postId } });
+    };
 
     if (posts.length === 0) {
         return <div className="main__posts-empty">게시물이 없습니다.</div>;
@@ -40,7 +48,7 @@ const Posts = ({ posts }) => {
     return (
         <div className="main__posts">
             {posts.map((post) => (
-                <div key={post.id} className="main__post">
+                <div key={post.id} className="main__post" onClick={()=>handlePostClick(post.id)}>
                     {post.path ? (
                         <img src={`http://localhost:8090${post.path}`} alt="post" className="main__post-default" />
                     ) : (
@@ -69,8 +77,8 @@ const Main = () => {
     const fetchPosts = async () => {
         try {
             const url = isLogin
-                ? `http://localhost:8090/posts/login?page=1&size=2`
-                : `http://localhost:8090/posts?page=1&size=2`;
+                ? `http://localhost:8090/posts/login?page=1&size=5`
+                : `http://localhost:8090/posts?page=1&size=5`;
             const response = await axios.get(url, {
                 withCredentials: true
             });
@@ -103,10 +111,6 @@ const Main = () => {
         }
     }, [isLogin, location.state]);
 
-    const handleSearch = (searchTerm) => {
-        console.log("검색내용: ", searchTerm);
-    };
-
     const handleNewPost = () => {
         navigate('/newpost');
     };
@@ -115,7 +119,6 @@ const Main = () => {
         <div className="main">
             <div className="main-page">
                 <SearchBar
-                    handleSearch={handleSearch}
                     searchMeeting={searchMeeting}
                     setSearchMeeting={setSearchMeeting}
                 />

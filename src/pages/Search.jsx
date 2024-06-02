@@ -1,76 +1,55 @@
-// 검색 페이지
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import "./Search.css";
-import Header from "./Header";
+import cat from "../images/고양이.jpg";
 
 const Search = () => {
     const location = useLocation();
-    const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || '');
+    const { searchTerm } = location.state || {};
     const [posts, setPosts] = useState([]);
-    const [sortOrder, setSortOrder] = useState('latest');
 
     useEffect(() => {
-        // Fetch posts from backend based on searchTerm
-        fetchPosts();
-    }, [searchTerm, sortOrder]);
+        // const fetchSearchResults = async () => {
+        //     try {
+        //         const response = await axios.get(`http://localhost:8090/posts/search?query=${searchTerm}`, { withCredentials: true });
+        //         setPosts(response.data);
+        //     } catch (error) {
+        //         console.error('검색 결과 에러:', error);
+        //     }
+        // };
+        //
+        // if (searchTerm) {
+        //     fetchSearchResults();
+        // }
+    }, [searchTerm]);
 
-    const fetchPosts = async () => {
-        try {
-            const response = await fetch(`http://localhost:8090/api/posts?search=${searchTerm}&sort=${sortOrder}`);
-            if (response.ok) {
-                const data = await response.json();
-                setPosts(data);
-            }
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-        }
-    };
+    if (!searchTerm) {
+        return <div className="search__empty">검색어를 입력하세요.</div>;
+    }
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        fetchPosts();
-    };
-
-    const handleSortChange = (e) => {
-        setSortOrder(e.target.value);
-    };
+    if (posts.length === 0) {
+        return <div className="search__empty">검색 결과가 없습니다.</div>;
+    }
 
     return (
-        <div>
-            <Header />
-            <div className="search-container">
-                <form onSubmit={handleSearch}>
-                    <input
-                        type="text"
-                        valued={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="검색어를 입력하세요"
-                    />
-                    <button type="submit">검색</button>
-                </form>
-                <select value={sortOrder} onChange={handleSortChange}>
-                    <option value="latest">최신순</option>
-                    <option value="date">날짜순</option>
-                </select>
-                <div className="posts">
-                    {posts.map(post => (
-                        <div key={post.id} className="post">
-                            <img src={post.image} alt={post.title} />
-                            <div className="post-content">
-                                <h3>{post.title}</h3>
-                                <p>{post.content}</p>
-                                <p>{post.date}</p>
-                                <div className="hashtags">
-                                    {post.hashtags.map((tag, index) => (
-                                        <span key={index}>#{tag}</span>
-                                    ))}
-                                </div>
-                            </div>
+        <div className="search">
+            <h1>검색 결과</h1>
+            <div className="search__posts">
+                {posts.map((post) => (
+                    <div key={post.id} className="search__post">
+                        {post.path ? (
+                            <img src={`http://localhost:8090${post.path}`} alt="post" className="search__post-default" />
+                        ) : (
+                            <img src={cat} alt="default" className="search__post-default" />
+                        )}
+                        <div className="search__post-content">
+                            <div className="search__post-id"># {post.id}</div>
+                            <div className="search__post-title">제목: {post.title}</div>
+                            <div className="search__post-content">내용: {post.contents}</div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

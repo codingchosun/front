@@ -5,16 +5,16 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./pages/AuthContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-// import VotePage from "./pages/VotePage";
 import Main from "./pages/Main";
 import FindId from "./pages/FindId";
 import FindPw from "./pages/FindPw";
 import MyPage from "./pages/MyPage";
 import NewPost from "./pages/NewPost";
-// import UserEdit from "./pages/UserEdit";
-// import Party from "./pages/Party";
+// import VotePage from "./pages/VotePage";
+import UserEdit from "./pages/UserEdit";
+import Party from "./pages/Party";
 // import Manage from "./pages/Manage";
-// import Search from "./pages/Search";
+import Search from "./pages/Search";
 import Header from "./pages/Header";
 
 axios.defaults.baseURL = 'http://localhost:8090/';
@@ -29,16 +29,15 @@ function App() {
                     <Route path="/main" element={<Main/>}/> {/*메인 페이지*/}
                     <Route path="/login" element={<Login/>}/> {/*로그인 페이지*/}
                     <Route path="/register" element={<Register/>}/> {/*회원가입 페이지*/}
-
                     {/*<Route path="/votepage" element={<VotePage/>}/> /!*투표 페이지*!/*/}
                     <Route path="/findid" element={<FindId/>}/> {/*아이디찾기 페이지*/}
                     <Route path="/findpw" element={<FindPw/>}/> {/*비밀번호찾기 페이지*/}
                     <Route path="/mypage" element={<MyPage/>}/> {/*내정보 페이지*/}
                     <Route path="/newpost" element={<NewPost/>}/> {/*새 게시물 제작 페이지*/}
-                    {/*<Route path="/useredit" element={<UserEdit/>}/> /!*개인정보 수정 페이지*!/*/}
-                    {/*<Route path="/party" element={<Party/>}/> /!*모임 페이지*!/*/}
+                    <Route path="/useredit" element={<UserEdit/>}/> {/*개인정보 수정 페이지*/}
+                    <Route path="/party" element={<Party/>}/> {/*모임 페이지*/}
                     {/*<Route path="/manage" element={<Manage/>}/> /!*관리 페이지*!/*/}
-                    {/*<Route path="/search" element={<Search/>}/> /!*검색 페이지*!/*/}
+                    <Route path="/search" element={<Search/>}/> {/*검색 페이지*/}
                 </Routes>
         </AuthProvider>
     );

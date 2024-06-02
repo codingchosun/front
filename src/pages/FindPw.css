@@ -1,4 +1,4 @@
-.findPw {
+.find-pw {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,44 +12,55 @@
     margin: 20px auto;
 }
 
-.findPw h1 {
+.find-pw__title {
     margin-bottom: 20px;
     font-size: 24px;
 }
 
-.findPwForm {
+.find-pw__form-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
     width: 100%;
 }
 
-.findPwForm label {
+.find-pw__label {
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-.findPwForm input {
+.find-pw__input {
     font-size: 14px;
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
 }
 
-.findPw button {
+.find-pw__buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.find-pw__button {
     padding: 10px 20px;
     margin-top: 10px;
     font-size: 14px;
     cursor: pointer;
 }
 
-.findPw button[disabled] {
+.find-pw__button[disabled] {
     cursor: not-allowed;
     background-color: #ccc;
 }
 
-.foundId {
+.find-pw__result {
     margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.find-pw__found-pw {
     font-size: 18px;
     font-weight: bold;
 }

@@ -12,12 +12,12 @@ const NewPost = () => {
     const [date, setDate] = useState(new Date());
     const [content, setContent] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
-    // const [images, setImages]=useState([]);
+    const [images, setImages]=useState([]);
     const navigate = useNavigate();
 
-    // const handleImageChange=(e)=>{
-    //     setImages([...e.target.files]);
-    // };
+    const handleImageChange=(e)=>{
+        setImages([...e.target.files]);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,9 +37,7 @@ const NewPost = () => {
             hashtags: hashtagsArray
         };
         console.log("해시태그 전송전: ", hashtagsArray);
-        // images.forEach((image, index) => {
-        //     formData.append(`images[${index}]`, image);
-        // });
+
 
         try {
             const response = await axios.post('http://localhost:8090/posts/register', postData, {
@@ -48,11 +46,25 @@ const NewPost = () => {
                     'Content-Type': 'application/json',
                 },
             });
-            console.log("해시태그 전송후: ", hashtagsArray);
+
             const newPostId = response.data.body;
 
+            if (images.length > 0){
+                const formData=new FormData();
+                images.forEach( (image, index) => {
+                    formData.append(`files`, image);
+                });
+
+                await axios.post(`http://localhost:8090/posts/${newPostId}/images`, formData, {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            }
+
             alert("게시물이 작성되었습니다");
-            console.log('Navigating to /main with newPostId:', newPostId);
+            console.log('newPostId:', newPostId);
             navigate("/main", { state: { newPostId } });
 
         } catch (error) {
@@ -107,15 +119,15 @@ const NewPost = () => {
                         onChange={(e) => setContent(e.target.value)}
                     />
                 </div>
-                {/*<div className="form-group">*/}
-                {/*    <label htmlFor="images">이미지 업로드</label>*/}
-                {/*    <input*/}
-                {/*        type="file"*/}
-                {/*        id="images"*/}
-                {/*        multiple*/}
-                {/*        onChange={handleImageChange}*/}
-                {/*    />*/}
-                {/*</div>*/}
+                <div className="form-group">
+                    <label htmlFor="images">이미지 업로드</label>
+                    <input
+                        type="file"
+                        id="images"
+                        multiple
+                        onChange={handleImageChange}
+                    />
+                </div>
                 <div className="form-buttons">
                     <button type="button" className="cancel-button" onClick={handleCancel}>취소</button>
                     <button type="submit" className="submit-button" disabled={isSubmit}>

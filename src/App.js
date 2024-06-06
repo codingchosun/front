@@ -9,6 +9,7 @@ import Main from "./pages/Main";
 import FindId from "./pages/FindId";
 import FindPw from "./pages/FindPw";
 import MyPage from "./pages/MyPage";
+import MyParty from "./pages/MyParty";
 import NewPost from "./pages/NewPost";
 // import VotePage from "./pages/VotePage";
 import UserEdit from "./pages/UserEdit";
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/newpost" element={<NewPost/>}/> {/*새 게시물 제작 페이지*/}
                     <Route path="/useredit" element={<UserEdit/>}/> {/*개인정보 수정 페이지*/}
                     <Route path="/party" element={<Party/>}/> {/*모임 페이지*/}
+                    <Route path="/myparty" element={<MyParty/>}/>
                     {/*<Route path="/manage" element={<Manage/>}/> /!*관리 페이지*!/*/}
                     <Route path="/search" element={<Search/>}/> {/*검색 페이지*/}
                 </Routes>

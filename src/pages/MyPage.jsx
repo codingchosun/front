@@ -128,7 +128,7 @@ const MyPage = () => {
                 <Link to="/useredit">
                     <button>수정페이지</button>
                 </Link>
-                <Link to="/party">
+                <Link to="/myparty">
                     <button>모임 목록</button>
                 </Link>
                 <button onClick={handleDeleteAccount}>회원탈퇴</button>

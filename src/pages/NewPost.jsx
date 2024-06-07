@@ -36,8 +36,6 @@ const NewPost = () => {
             start_time: date.toISOString(),
             hashtags: hashtagsArray
         };
-        console.log("해시태그 전송전: ", hashtagsArray);
-
 
         try {
             const response = await axios.post('http://localhost:8090/posts/register', postData, {

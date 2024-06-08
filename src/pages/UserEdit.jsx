@@ -32,7 +32,7 @@ const UserEdit = () => {
                 console.error("회원정보 가져오기 에러:", error);
             }
         };
-
+        console.log('userId: ',userId);
         if (isLogin) {
             fetchUserData();
         } else {

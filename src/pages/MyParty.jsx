@@ -6,7 +6,7 @@ import axios from 'axios';
 import './MyParty.css';
 
 const MyParty = () => {
-    const { isLogin } = useAuth();
+    const { isLogin, userId } = useAuth();
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState([]);
@@ -41,7 +41,7 @@ const MyParty = () => {
             <div className="partyList">
                 {posts.length > 0 ? (
                     posts.map((post, index) => (
-                        <div key={index} className="partyItem" onClick={() => handlePostClick(post.id)}>
+                        <div key={index} className="partyItem" onClick={() => handlePostClick(post.post_id)}>
                             <h3>{post.title}</h3>
                             <p>{post.create_at}</p>
                             <p>작성자: {post.author}</p>

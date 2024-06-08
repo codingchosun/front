@@ -1,4 +1,3 @@
-// 모임(게시물) 페이지
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
@@ -16,15 +15,24 @@ const Party = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [isOrganizer, setIsOrganizer] = useState(false);
-
     const postId = location.state ? location.state.postId : undefined;
+    // 수정된 정보들
+    const [isEditing, setIsEditing] = useState(false);
+    const [editTitle, setEditTitle] = useState('');
+    const [editContent, setEditContent] = useState('');
+    const [editDate, setEditDate] = useState('');
+    const [addTags, setAddTags] = useState([]);
+    const [removeTags, setRemoveTags] = useState([]);
+    const [removeImages, setRemoveImages] = useState([]);
 
     useEffect(() => {
-        if (userId && userId.role === 'organizer') { // organizer 대신 권한이 방장인 사람 구분하기
-            setIsOrganizer(true);
+        console.log('userId: ',userId);
+        console.log('postId: ', postId);
+
+        if (postId) {
+            fetchPostDetails();
         }
-        fetchPostDetails();
-    }, [userId]);
+    }, [postId]);
 
     const fetchPostDetails = async () => {
         try {
@@ -34,9 +42,16 @@ const Party = () => {
                 setImages(response.data.paged_image_response_list.content);
                 setComments(response.data.paged_comment_response_list.content);
                 fetchParticipants();
+
+                // 현재 사용자가 게시글 작성자인지 확인
+                if (response.data.post_response.user_dto.user_id === userId) {
+                    setIsOrganizer(true);
+                } else {
+                    setIsOrganizer(false);
+                }
             }
         } catch (error) {
-            console.error('Error fetching post details:', error);
+            console.error('게시물 정보 에러:', error);
         }
     };
 
@@ -47,7 +62,7 @@ const Party = () => {
                 setParticipants(response.data);
             }
         } catch (error) {
-            console.error('Error fetching participants:', error);
+            console.error('참가 에러:', error);
         }
     };
 
@@ -58,7 +73,7 @@ const Party = () => {
                 setComments(response.data.content);
             }
         } catch (error) {
-            console.error('Error fetching comments:', error);
+            console.error('댓글 에러:', error);
         }
     };
 
@@ -69,7 +84,7 @@ const Party = () => {
                 fetchParticipants();
             }
         } catch (error) {
-            console.error('Error joining the party:', error);
+            console.error('모임 참가 에러:', error);
         }
     };
 
@@ -80,7 +95,7 @@ const Party = () => {
                 fetchParticipants();
             }
         } catch (error) {
-            console.error('Error leaving the party:', error);
+            console.error('모임 떠나기 에러:', error);
         }
     };
 
@@ -89,9 +104,6 @@ const Party = () => {
     };
 
     const handleAddComment = async () => {
-        if (!newComment){
-            return;
-        }
         try {
             const response = await axios.post(`http://localhost:8090/posts/${postId}/comments`, {
                 contents: newComment,
@@ -101,22 +113,67 @@ const Party = () => {
                 fetchComments();
             }
         } catch (error) {
-            console.error('Error adding comment:', error);
+            console.error('댓글 추가 에러:', error);
         }
+    };
+
+    const handleEditPost = async () => {
+        const updatedPost = {
+            title: editTitle,
+            content: editContent,
+            start_time: new Date(editDate).toISOString(),
+            add_tags: addTags,
+            remove_tags: removeTags,
+            remove_images: removeImages,
+        };
+
+        try {
+            const response = await axios.post(`http://localhost:8090/posts/${postId}/edit`, updatedPost);
+            if (response.status === 200) {
+                setIsEditing(false);
+                fetchPostDetails();
+            }
+        } catch (error) {
+            console.error('게시물 수정 에러:', error);
+        }
+    };
+
+    const handleEditClick = () => {
+        setEditTitle(post.title);
+        setEditContent(post.content);
+        setEditDate(post.start_time);
+        setIsEditing(true);
     };
 
     return (
         <div className="party-container">
             <div className="party-details">
-                <h1>{post.title}</h1>
-                <div className="party-info">
-                    <p><strong>일시:</strong> {post.start_time}</p>
-                    <p><strong>해시태그:</strong> {Array.isArray(post.hash_list) ? post.hash_list.join(', ') : ''}</p>
-                    {images.length > 0 && images.map(image => (
-                        <img key={image.image_id} src={`http://localhost:8090${image.url}`} alt={post.title} className="party-thumbnail" />
-                    ))}
-                    <p>{post.content}</p>
-                </div>
+                {isEditing ? (
+                    <div className="edit-form">
+                        <h1>게시글 수정</h1>
+                        <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} placeholder="제목" />
+                        <textarea value={editContent} onChange={(e) => setEditContent(e.target.value)} placeholder="내용" />
+                        <input type="datetime-local" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
+                        <input type="text" value={addTags} onChange={(e) => setAddTags(e.target.value)} placeholder="추가할 해시태그 (공백으로 구분)" />
+                        <input type="text" value={removeTags} onChange={(e) => setRemoveTags(e.target.value)} placeholder="삭제할 해시태그 (공백으로 구분)" />
+                        <input type="text" value={removeImages} onChange={(e) => setRemoveImages(e.target.value)} placeholder="삭제할 이미지 ID (쉼표로 구분)" />
+                        <button onClick={handleEditPost}>수정 완료</button>
+                        <button onClick={() => setIsEditing(false)}>취소</button>
+                    </div>
+                ) : (
+                    <>
+                        <h1>{post.title}</h1>
+                        <div className="party-info">
+                            <p><strong>일시:</strong> {new Date(post.start_time).toLocaleString()}</p>
+                            <p><strong>해시태그:</strong> {Array.isArray(post.hash_list) ? post.hash_list.join(', ') : ''}</p>
+                            {images.length > 0 && images.map(image => (
+                                <img key={image.url} src={`${process.env.PUBLIC_URL}/postImage/${image.url}`} alt={post.title} className="party-thumbnail" />
+                            ))}
+                            <p>{post.content}</p>
+                        </div>
+                        {isOrganizer && <button onClick={handleEditClick}>게시글 수정</button>}
+                    </>
+                )}
             </div>
             <div className="party-participants">
                 <h2>참가자 명단</h2>
@@ -139,7 +196,7 @@ const Party = () => {
                     {comments.map((comment, index) => (
                         <li key={index}>
                             <p><strong>{comment.user_dto.nickname}:</strong> {comment.content}</p>
-                            <p>{comment.created_at}</p>
+                            <p>{new Date(comment.created_at).toLocaleString()}</p>
                         </li>
                     ))}
                 </ul>

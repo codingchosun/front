@@ -21,7 +21,7 @@ import api from "./api";
 
 axios.defaults.baseURL = 'http://localhost:8090/';
 axios.defaults.withCredentials = true;
-
+//api 동적ㅎ
 function App() {
     return (
         <AuthProvider>

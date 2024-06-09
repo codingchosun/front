@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import axios from 'axios';
 import './Party.css';
+import api from "../api";
 
 const Party = () => {
     const { isLogin, userId } = useAuth();
@@ -36,7 +37,7 @@ const Party = () => {
 
     const fetchPostDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:8090/posts/${postId}`);
+            const response = await api.get(`/posts/${postId}`);
             if (response.status === 200) {
                 setPost(response.data.post_response);
                 setImages(response.data.paged_image_response_list.content);
@@ -57,7 +58,7 @@ const Party = () => {
 
     const fetchParticipants = async () => {
         try {
-            const response = await axios.get(`http://localhost:8090/posts/${postId}/participant`);
+            const response = await api.get(`/posts/${postId}/participant`);
             if (response.status === 200) {
                 setParticipants(response.data);
             }
@@ -68,7 +69,7 @@ const Party = () => {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`http://localhost:8090/posts/${postId}/comments`);
+            const response = await api.get(`/posts/${postId}/comments`);
             if (response.status === 200) {
                 setComments(response.data.content);
             }
@@ -79,7 +80,7 @@ const Party = () => {
 
     const handleJoin = async () => {
         try {
-            const response = await axios.post(`http://localhost:8090/posts/${postId}/participant`);
+            const response = await api.post(`/posts/${postId}/participant`);
             if (response.status === 200) {
                 fetchParticipants();
             }
@@ -90,7 +91,7 @@ const Party = () => {
 
     const handleLeave = async () => {
         try {
-            const response = await axios.post(`http://localhost:8090/posts/${postId}/leave`);
+            const response = await api.post(`/posts/${postId}/leave`);
             if (response.status === 200) {
                 fetchParticipants();
             }
@@ -105,7 +106,7 @@ const Party = () => {
 
     const handleAddComment = async () => {
         try {
-            const response = await axios.post(`http://localhost:8090/posts/${postId}/comments`, {
+            const response = await api.post(`/posts/${postId}/comments`, {
                 contents: newComment,
             });
             if (response.status === 200) {
@@ -128,7 +129,7 @@ const Party = () => {
         };
 
         try {
-            const response = await axios.post(`http://localhost:8090/posts/${postId}/edit`, updatedPost);
+            const response = await api.post(`/posts/${postId}/edit`, updatedPost);
             if (response.status === 200) {
                 setIsEditing(false);
                 fetchPostDetails();
@@ -137,7 +138,9 @@ const Party = () => {
             console.error('게시물 수정 에러:', error);
         }
     };
-
+    const handleParticipantClick = (participantId) => {
+        navigate(`/profile/${participantId}`);
+    };
     const handleEditClick = () => {
         setEditTitle(post.title);
         setEditContent(post.content);
@@ -179,7 +182,7 @@ const Party = () => {
                 <h2>참가자 명단</h2>
                 <ul>
                     {participants.map((participant, index) => (
-                        <li key={index}>{participant.nickname}</li>
+                        <li key={index} onClick={() => handleParticipantClick(participant.user_id)}>{participant.nickname}</li>
                     ))}
                 </ul>
                 {isLogin && (

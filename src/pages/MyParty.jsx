@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import axios from 'axios';
 import './MyParty.css';
-
+import api from "../api"
 const MyParty = () => {
     const { isLogin, userId } = useAuth();
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const MyParty = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:8090/mypost', { withCredentials: true });
+                const response = await api.get('/mypost', { withCredentials: true });
                 if (response.data.http_status === "OK" && response.data.success){
                     setPosts(response.data.body);
                 }

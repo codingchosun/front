@@ -12,8 +12,8 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 700px;
-    background-color: #F6F4F1; /*#E1D8EE #E0C6B2*/
+    max-width: 1000px; /* Increased max-width to accommodate two columns */
+    background-color: #F6F4F1;
     padding: 20px;
     border: 1px solid;
     border-radius: 5px;
@@ -52,9 +52,11 @@
     background-color: #1F1122;
     white-space: nowrap;
 }
+
 .main__search-bar button:hover {
     background-color: #374051;
 }
+
 .main__hashtags {
     display: flex;
     justify-content: flex-start;
@@ -76,34 +78,40 @@
     background-color: #f1f1f1;
 }
 
-.main__newpost-button {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    background-color: #1F1122;
-    white-space: nowrap;
-    cursor: pointer;
+.main__posts-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Ensures both columns are spaced out */
+    gap: 20px; /* Adds some space between the two columns */
 }
 
-.main__newpost-button:hover {
-    background-color: #374051;
+.main__hashtags-posts,
+.main__allposts {
+    flex: 1; /* Ensures both columns take equal space */
+    max-width: 48%; /* Ensures columns do not exceed 48% of the container width */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* 게시물 전체 */
 .main__posts {
     display: flex;
     flex-direction: column;
-    margin: 20px;
-    max-width: 500px;
+    margin: 20px 0;
+    max-width: 100%;
     max-height: 500px;
     overflow-y: auto;
     width: 100%;
     gap: 10px;
     border: 1px solid;
     border-radius: 5px;
+}
+
+.main__posts-title {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    text-align: center;
 }
 
 /* 각각 게시물 */
@@ -141,14 +149,38 @@
 }
 
 .main__post-id,
-.main__post-title,
+.main__post-title {
+    margin: 5px 0;
+}
+
 .main__post-contents {
     margin: 5px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .main__posts-empty {
     margin: 20px;
     color: gray;
+}
+
+.main__newpost-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #1F1122;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.main__newpost-button:hover {
+    background-color: #374051;
 }
 
 .main__login-condition {

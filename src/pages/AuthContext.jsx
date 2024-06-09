@@ -1,6 +1,6 @@
 // 로그인 데이터 유지용 컨텍스트
 import React, { createContext, useState, useContext, useEffect } from "react";
-
+import api from "../api"
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);

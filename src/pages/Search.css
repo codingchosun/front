@@ -4,20 +4,14 @@
     align-items: center;
     padding: 20px;
     background-color: #F4F4F9;
-    color: black;
-}
-
-.search__empty {
-    margin: 20px;
-    color: gray;
 }
 
 .search__posts {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
-    max-width: 700px;
+    max-width: 800px;
 }
 
 .search__post {
@@ -25,25 +19,25 @@
     flex-direction: row;
     align-items: flex-start;
     padding: 10px;
-    border: 1px solid;
     border-radius: 5px;
     background-color: white;
     color: black;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .search__post:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .search__post-default {
     width: 30%;
-    max-width: 300px;
+    max-width: 150px;
     height: auto;
     border: none;
     border-radius: 5px;
-    margin-right: 10px;
+    margin: 10px;
 }
 
 .search__post-content {
@@ -55,6 +49,12 @@
 
 .search__post-id,
 .search__post-title,
-.search__post-contents {
+.search__post-content {
     margin: 5px 0;
+}
+
+.search__empty {
+    margin: 20px;
+    color: gray;
+    font-size: 1.2em;
 }

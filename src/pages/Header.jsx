@@ -5,13 +5,14 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../images/로고.png";
 import "./Header.css";
+import api from "../api"
 
 const Header = () => {
     const { isLogin, logout } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        const response = await axios.post("http://localhost:8090/logout", {},{
+        const response = await api.post("/logout", {},{
         withCredentials: false
         });
         logout();

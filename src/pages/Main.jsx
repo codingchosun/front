@@ -5,7 +5,7 @@ import { useAuth } from "./AuthContext";
 import axios from "axios";
 import "./Main.css";
 import cat from "../images/고양이.jpg";
-
+import api from "../api"
 const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
     const navigate = useNavigate();
 
@@ -35,7 +35,14 @@ const Hashtags = ({ hashtags }) => {
     );
 };
 
-const Posts = ({ posts = [] }) => {
+const cutContent=(content, maxLength) => {
+    if ( content.length <= maxLength){
+        return content;
+    }
+    return content.substring(0,maxLength)+'...';
+};
+
+const Posts = ({ posts = [], title }) => {
     const navigate = useNavigate();
     const handlePostClick = (postId) => {
         navigate('/party', { state: { postId } });
@@ -47,19 +54,15 @@ const Posts = ({ posts = [] }) => {
 
     return (
         <div className="main__posts">
-            {posts.map((post) => (
-                <div key={post.post_id} className="main__post" onClick={() => handlePostClick(post.post_id)}>
-                    {post.imageUrls && post.imageUrls.length > 0 ? (
-                        post.imageUrls.map((url, index) => (
-                            <img key={index} src={`http://localhost:8090${url}`} alt="post" className="main__post-default" />
-                        ))
-                    ) : (
-                        <img src={cat} alt="default" className="main__post-default" />
-                    )}
+            <h2 className="main__posts-title">{title}</h2>
+            { posts.map((post) => (
+                <div key={post.id} className="main__post" onClick={() => handlePostClick(post.id)}>
+                    <img src={cat} alt="default" className="main__post-default" />
+
                     <div className="main__post-content">
-                        <div className="main__post-id"># {post.id}</div>
-                        <div className="main__post-title">제목: {post.title}</div>
-                        <div className="main__post-content">내용: {post.contents}</div>
+                        <div className="main__post-id">번호: {post.id}</div>
+                        <div className="main__post-title">제목: {cutContent(post.title,8)}</div>
+                        <div className="main__post-content">내용: {cutContent(post.contents,30)}</div>
                     </div>
                 </div>
             ))}
@@ -71,6 +74,7 @@ const Main = () => {
     const { isLogin, userId } = useAuth();
     const [searchMeeting, setSearchMeeting] = useState('');
     const [posts, setPosts] = useState([]);
+    const [allPosts, setAllPosts]=useState([]);
     const [hashtags, setHashtags] = useState([]);
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
@@ -80,57 +84,46 @@ const Main = () => {
 
     const fetchPosts = async () => {
         try {
-            const url = isLogin ? `http://localhost:8090/posts/login?page=${page}&size=${size}`
-                : `http://localhost:8090/posts`;
-            console.log(`Fetching posts from URL: ${url}`);
-            const response = await axios.get(url, {
+            let allPostsUrl = `/posts?page=${page}&size=${size}`;
+            console.log(`모든 게시물 URL: ${allPostsUrl}`);
+            let allPostsResponse = await api.get(allPostsUrl, {
                 withCredentials: true
             });
 
-            console.log('Response data:', response.data);
+            let allPostResponses = allPostsResponse.data.no_login_posts_responses.content;
 
-            let postResponses = [];
+            let PostResponses = [];
+            let hashtagDtoList = [];
 
             if (isLogin) {
-                console.log('Logged in post responses:', response.data.login_posts_responses);
-                if (response.data.login_posts_responses && response.data.login_posts_responses.content) {
-                    postResponses = response.data.login_posts_responses.content;
-                }
+                let PostsUrl = `/posts/login?page=${page}&size=${size}`;
+                console.log(`유저 게시물 URL: ${PostsUrl}`);
+                let taggedPostsResponse = await api.get(PostsUrl, {
+                    withCredentials: true
+                });
+
+                console.log('로그인후 받는 데이터들:', taggedPostsResponse.data.login_posts_responses);
+                PostResponses = taggedPostsResponse.data.login_posts_responses.content;
+                hashtagDtoList = taggedPostsResponse.data.hashtag_dto_list || [];
             } else {
-                console.log('Not logged in post responses:', response.data.no_login_posts_responses);
-                if (response.data.no_login_posts_responses && response.data.no_login_posts_responses.content) {
-                    postResponses = response.data.no_login_posts_responses.content;
-                }
+                hashtagDtoList = allPostsResponse.data.hashtag_dto_list || [];
             }
 
-            const hashtagDtoList = response.data.hashtag_dto_list || [];
-
-            // 이미지 URL 추출
-            const postsWithImages = await Promise.all(postResponses.map(async (post) => {
-                try {
-                    const imageResponse = await axios.get(`http://localhost:8090/posts/${post.post_id}`);
-                    const imageUrls = imageResponse.data.paged_image_response_list.content.map(img => img.url);
-                    return { ...post, imageUrls };
-                } catch (error) {
-                    console.error('이미지 가져오기 에러:', error);
-                    return { ...post, imageUrls: [] };
-                }
-            }));
-
-            console.log('게시물 내용:', postsWithImages);
             console.log('해시태그:', hashtagDtoList);
 
-            setPosts(postsWithImages);
+            setPosts(PostResponses);
+            setAllPosts(allPostResponses);
             setHashtags(hashtagDtoList);
+
         } catch (error) {
             console.error('게시물 에러:', error);
         }
     };
 
     useEffect(() => {
-        console.log('isLogin:', isLogin);
+        console.log('로그인 여부:', isLogin);
         console.log('location.state:', location.state);
-        console.log('userId:', userId);
+        console.log('아이디:', userId);
 
         fetchPosts();
 
@@ -152,8 +145,18 @@ const Main = () => {
                     setSearchMeeting={setSearchMeeting}
                 />
                 <Hashtags hashtags={hashtags} />
-                <button onClick={handleNewPost} className="main__newpost-button">글 작성</button>
-                <Posts posts={posts} />
+
+                <div className="main__posts-container">
+                    { isLogin && (
+                        <div className="main__hashtags-posts">
+                            <Posts posts={posts} title="추천 게시물" />
+                        </div>
+                    )}
+                    <div className="main__allposts">
+                        <Posts posts={allPosts} title="전체 게시물"/>
+                        <button onClick={handleNewPost} className="main__newpost-button">글 작성</button>
+                    </div>
+                </div>
             </div>
         </div>
     );

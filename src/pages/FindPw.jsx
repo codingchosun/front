@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./FindPw.css";
-
+import api from "../api"
 const FindPw = () => {
     const [loginId, setloginId] = useState("");
     const [name, setName] = useState("");
@@ -14,7 +14,7 @@ const FindPw = () => {
         e.preventDefault();
         console.log("Sending request with:", { name, email, loginId });
         try {
-            const response = await axios.post('http://localhost:8090/findpassword', {
+            const response = await api.post('/findpassword', {
                 name, email, loginId
             });
             if(response.status === 200 && response.data.success) {

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./FindId.css";
+import api from "../api"
 const FindId = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ const FindId = () => {
     const handleFindId=async(e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:8090/findId`,{
+            const response = await api.post(`/findId`,{
                 name, email
             });
             console.log("아이디찾기 데이터:", response);  // 로그 출력

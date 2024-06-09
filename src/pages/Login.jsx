@@ -4,7 +4,7 @@ import axios from 'axios';
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from './AuthContext';
-
+import api from "../api"
 const Login = () => {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8090/login", {
+      const response = await api.post("/login", {
         loginId: loginId,
         password: password
       }, {

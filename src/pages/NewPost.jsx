@@ -5,6 +5,7 @@ import axios from "axios";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import "./NewPost.css";
+import api from "../api";
 
 const NewPost = () => {
     const [title, setTitle] = useState('');
@@ -38,7 +39,7 @@ const NewPost = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8090/posts/register', postData, {
+            const response = await api.post('/posts/register', postData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const NewPost = () => {
                     formData.append(`files`, image);
                 });
 
-                await axios.post(`http://localhost:8090/posts/${newPostId}/images`, formData, {
+                await api.post(`/posts/${newPostId}/images`, formData, {
                     withCredentials: true,
                     headers: {
                         'Content-Type': 'multipart/form-data',

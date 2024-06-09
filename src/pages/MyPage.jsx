@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 import "./MyPage.css";
-
+import api from "../api"
 const MyPage = () => {
     const { isLogin, logout, userId } = useAuth();
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ const MyPage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8090/profile/${userId}`, { withCredentials: true });
+                const response = await api.get(`/profile/${userId}`, { withCredentials: true });
                 const data = response.data;
                 setNickname(data.nickname);
                 setIntroduction(data.introduction);
@@ -41,7 +41,7 @@ const MyPage = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            const response = await axios.get(`http://localhost:8090/deleteAccount`, { withCredentials: true });
+            const response = await api.get(`/deleteAccount`, { withCredentials: true });
             const data = response.data;
             if (data.success) {
                 alert('회원탈퇴가 완료되었습니다');

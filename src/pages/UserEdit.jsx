@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./UserEdit.css";
 import axios from "axios";
-
+import api from "../api";
 const UserEdit = () => {
     const { isLogin, userId } = useAuth();
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const UserEdit = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8090/profile/${userId}`, { withCredentials: true });
+                const response = await api.get(`/profile/${userId}`, { withCredentials: true });
                 const data = response.data;
 
                 setEmail(data.email);
@@ -43,7 +43,7 @@ const UserEdit = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:8090/profile/${userId}`, {
+            const response = await api.post(`/profile/${userId}`, {
                 password,
                 email,
                 genderCode,

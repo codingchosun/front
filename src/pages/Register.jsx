@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Register.css";
-
+import api from "../api";
 const Register = () => {
     const [userData, setUserData]=useState({
         name: '',
@@ -25,7 +25,7 @@ const Register = () => {
     const handleRegister = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:8090/register',userData,{
+        const response = await api.post('/register',userData,{
             headers: {
                 'Content-Type': 'application/json',
             },

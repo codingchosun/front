@@ -17,6 +17,7 @@ import Party from "./pages/Party";
 // import Manage from "./pages/Manage";
 import Search from "./pages/Search";
 import Header from "./pages/Header";
+import api from "./api";
 
 axios.defaults.baseURL = 'http://localhost:8090/';
 axios.defaults.withCredentials = true;

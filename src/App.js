@@ -17,6 +17,7 @@ import Party from "./pages/Party";
 // import Manage from "./pages/Manage";
 import Search from "./pages/Search";
 import Header from "./pages/Header";
+
 import api from "./api";
 
 axios.defaults.baseURL = api;
@@ -27,7 +28,7 @@ function App() {
         <AuthProvider>
             <Header/>
                 <Routes>
-                    <Route path="/" element={<Main/>}/>
+                    <Route path="" element={<Main/>}/>
                     <Route path="/main" element={<Main/>}/> {/*메인 페이지*/}
                     <Route path="/login" element={<Login/>}/> {/*로그인 페이지*/}
                     <Route path="/register" element={<Register/>}/> {/*회원가입 페이지*/}

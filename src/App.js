@@ -19,7 +19,7 @@ import Search from "./pages/Search";
 import Header from "./pages/Header";
 import api from "./api";
 
-axios.defaults.baseURL = 'http://localhost:8090/';
+axios.defaults.baseURL = api;
 axios.defaults.withCredentials = true;
 
 function App() {

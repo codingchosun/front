@@ -5,7 +5,7 @@ body {
     padding: 0;
 }
 
-form {
+.register-form {
     background-color: white;
     max-width: 500px;
     margin: 40px auto;
@@ -14,52 +14,44 @@ form {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-form div {
+.register-form__group {
     margin-bottom: 15px;
 }
 
-label {
+.register-form__label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
-input[type="date"] {
-    width: calc(20%);
+
+.register-form__input,
+.register-form__select {
+    width: calc(100% - 150px);
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
 }
 
-select{
-    width: calc(20%);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
+.register-form__input[type="date"],
+.register-form__select {
+    width: 20%;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-    width: calc(80%);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus,
-input[type="date"]:focus,
-select:focus {
+.register-form__input:focus,
+.register-form__select:focus {
     border-color: #2659e7;
     outline: none;
     box-shadow: 0 0 0 2px rgba(38, 89, 231, 0.2);
 }
 
-button {
+.register-form__actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.register-form__button {
+    margin: 10px;
     padding: 10px 20px;
     font-size: 16px;
     color: white;
@@ -68,29 +60,16 @@ button {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.2s;
-    margin-right: 10px;
 }
 
-button:hover {
+.register-form__button:hover {
     background-color: #374051;
 }
 
-button[type="button"] {
-    background-color: #374051;
+.register-form__button--cancel {
+    background-color: #6c757d;
 }
 
-button[type="button"]:hover {
-    background-color: #374051;
-
-}
-.available {
-    color: green;
-    font-weight: bold;
-    margin-left: 10px;
-}
-
-.unavailable {
-    color: red;
-    font-weight: bold;
-    margin-left: 10px;
+.register-form__button--cancel:hover {
+    background-color: #495057;
 }

@@ -80,7 +80,9 @@ const Party = () => {
 
     const handleJoin = async () => {
         try {
-            const response = await api.post(`/posts/${postId}/participant`);
+            const response = await api.post(`/posts/${postId}/participant`,{},{
+                withCredentials: true
+            });
             if (response.status === 200) {
                 fetchParticipants();
             }
@@ -91,7 +93,9 @@ const Party = () => {
 
     const handleLeave = async () => {
         try {
-            const response = await api.post(`/posts/${postId}/leave`);
+            const response = await api.post(`/posts/${postId}/leave`,{},{
+                withCredentials: true
+            });
             if (response.status === 200) {
                 fetchParticipants();
             }
@@ -108,7 +112,7 @@ const Party = () => {
         try {
             const response = await api.post(`/posts/${postId}/comments`, {
                 contents: newComment,
-            });
+            }, { withCredentials: true });
             if (response.status === 200) {
                 setNewComment('');
                 fetchComments();
@@ -129,7 +133,7 @@ const Party = () => {
         };
 
         try {
-            const response = await api.post(`/posts/${postId}/edit`, updatedPost);
+            const response = await api.post(`/posts/${postId}/edit`, updatedPost, { withCredentials: true });
             if (response.status === 200) {
                 setIsEditing(false);
                 fetchPostDetails();

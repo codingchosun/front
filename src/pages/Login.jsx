@@ -1,36 +1,43 @@
 // 로그인 페이지
 import React, { useState } from 'react';
-import axios from 'axios';
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from './AuthContext';
 import api from "../api"
+import axios from "axios";
+
 const Login = () => {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
 
+  //로그인 통신
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    const formData = new FormData();
+    formData.append('loginId', loginId);
+    formData.append('password', password);
+
+    console.log("아이디 타입:",typeof(loginId)) //임시로 확인하고 지워야할것
+    console.log("비밀번호 타입:",typeof(password)) //임시로 확인하고 지워야할것
     try {
-      const response = await api.post("/login", {
-        loginId: loginId,
-        password: password
-      }, {
-        withCredentials: true
+      const response = await axios.post("http://localhost:8090/login", formData,{
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
-      console.log("로그인정보:", response);
-      localStorage.setItem('isLogin: ', 'true');
-      const userId = JSON.parse(response.config.data).loginId;
-      console.log("응답데이터:",response.userId);
 
-      console.log("userId:", userId);
-      login(userId);
 
+
+      if(response.status===200){
+        console.log("RESPONSE:", response);
+        sessionStorage.setItem('isLogin', 'ok'); //sessionStorage에 로그인 표시 'ok' 저장
+      }
+      console.log("로그인 성공");
       navigate("/main");
     } catch (error) {
+      alert("로그인 실패");
       console.error("로그인 오류:", error);
     }
   };

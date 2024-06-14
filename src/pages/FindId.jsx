@@ -17,6 +17,8 @@ const FindId = () => {
             const response = await api.post(`/findId`,{
                 name, email
             });
+
+
             console.log("아이디찾기 데이터:", response);  // 로그 출력
             const data = response.data.body;  // 응답 데이터에서 body 추출
             setFoundId(data);

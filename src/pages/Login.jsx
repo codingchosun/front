@@ -19,7 +19,7 @@ const Login = () => {
     formData.append('password', password);
 
     console.log("아이디 타입:",typeof(loginId)) //임시로 확인하고 지워야할것
-    console.log("비밀번호 타입:",typeof(password)) //임시로 확인하고 지워야할것
+    console.log("비밀번호 타입:",typeof(password))
     try {
       const response = await axios.post("http://localhost:8090/login", formData,{
         withCredentials: true,

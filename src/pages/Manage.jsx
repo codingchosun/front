@@ -1,88 +1,80 @@
-// 내 모임 페이지
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import api from "../api";
 import './Manage.css';
-import Header from './Header';
 
 const Manage = () => {
-    const { isLogin, user } = useAuth();
-    const navigate = useNavigate();
     const [participants, setParticipants] = useState([]);
     const [selectedParticipants, setSelectedParticipants] = useState([]);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const postId = location.state ? location.state.postId : undefined;
 
     useEffect(() => {
-        if (!isLogin || !user || user.role !== 'organizer') {
-            alert('접근 권한이 없습니다.');
-            navigate('/login');
-        } else {
-            // Fetch participants from backend
+        if (postId) {
             fetchParticipants();
         }
-    }, [isLogin, user]);
+    }, [postId]);
 
     const fetchParticipants = async () => {
         try {
-            const response = await fetch('http://localhost:8090/api/participants');
-            if (response.ok) {
-                const data = await response.json();
-                setParticipants(data);
+            const response = await api.get(`/posts/${postId}/participant`);
+            if (response.status === 200) {
+                setParticipants(response.data);
             }
         } catch (error) {
-            console.error('Error fetching participants:', error);
+            console.error('참가자 정보 에러:', error);
         }
     };
 
-    const handleSelectParticipant = (id) => {
-        if (selectedParticipants.includes(id)) {
-            setSelectedParticipants(selectedParticipants.filter(participantId => participantId !== id));
-        } else {
-            setSelectedParticipants([...selectedParticipants, id]);
-        }
+    const handleSelectParticipant = (userId) => {
+        setSelectedParticipants(prevSelected =>
+            prevSelected.includes(userId)
+                ? prevSelected.filter(id => id !== userId)
+                : [...prevSelected, userId]
+        );
     };
 
-    const handleExpelParticipants = async () => {
+    const handleKickParticipants = async () => {
         try {
-            const response = await fetch('http://localhost:8090/api/expel', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ participantIds: selectedParticipants }),
-            });
-            if (response.ok) {
-                alert('선택된 참가자가 퇴출되었습니다.');
+            const response = await api.post(`/posts/${postId}/removeParticipants`, {
+                user_ids: selectedParticipants
+            }, { withCredentials: true });
+
+            if (response.status === 200) {
+                alert('선택한 참가자가 추방되었습니다.');
                 fetchParticipants();
                 setSelectedParticipants([]);
-            } else {
-                alert('참가자 퇴출에 실패했습니다.');
             }
         } catch (error) {
-            console.error('Error expelling participants:', error);
+            console.error('참가자 추방 에러:', error);
+            alert('참가자를 추방하는 중 오류가 발생했습니다.');
         }
+    };
+
+    const handleCancel = () => {
+        navigate(-1);
     };
 
     return (
-        <div>
-            <Header />
-            <div className="manage-container">
-                <h1>참가자 명단 관리</h1>
-                <ul className="participants-list">
-                    {participants.map(participant => (
-                        <li key={participant.id}>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedParticipants.includes(participant.id)}
-                                    onChange={() => handleSelectParticipant(participant.id)}
-                                />
-                                <span className="participant-name">{participant.name}</span>
-                                <span className="participant-score">{participant.score}</span>
-                            </label>
-                        </li>
-                    ))}
-                </ul>
-                <button className="expel-button" onClick={handleExpelParticipants}>추방</button>
+        <div className="manage-container">
+            <h1>참가자 관리</h1>
+            <div className="participant-list">
+                {participants.map(participant => (
+                    <div key={participant.user_id} className="participant-item">
+                        <input
+                            type="checkbox"
+                            checked={selectedParticipants.includes(participant.user_id)}
+                            onChange={() => handleSelectParticipant(participant.user_id)}
+                        />
+                        <span>{participant.nickname}</span>
+                    </div>
+                ))}
+            </div>
+            <div className="manage-buttons">
+                <button onClick={handleKickParticipants} className="kick-button">추방</button>
+                <button onClick={handleCancel} className="cancel-button">취소</button>
             </div>
         </div>
     );

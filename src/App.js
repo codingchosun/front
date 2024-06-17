@@ -13,6 +13,7 @@ import MyParty from "./pages/MyParty";
 import NewPost from "./pages/NewPost";
 import Profile from "./pages/Profile";
 // import VotePage from "./pages/VotePage";
+import VotePage from "./pages/VotePage";
 import UserEdit from "./pages/UserEdit";
 import Party from "./pages/Party";
 import Manage from "./pages/Manage";
@@ -44,6 +45,14 @@ function App() {
                     <Route path="/manage" element={<Manage/>}/> {/*관리 페이지*/}
                     <Route path="/search" element={<Search/>}/> {/*검색 페이지*/}
                     {/*<Route path="/votepage" element={<VotePage/>}/> /!*투표 페이지*!/*/}
+                    {<Route path="/mypage" element={<MyPage/>}/> }
+                    {<Route path="/newpost" element={<NewPost/>}/> }
+                    {<Route path="/useredit" element={<UserEdit/>}/> }
+                    {<Route path="/party" element={<Party/>}/> }
+                    {<Route path="/myparty" element={<MyParty/>}/>}
+                    {<Route path="/manage" element={<Manage/>}/> }
+                    {<Route path="/search" element={<Search/>}/>}
+                    {<Route path="/votepage" element={<VotePage/>}/>}
                 </Routes>
         </AuthProvider>
     );

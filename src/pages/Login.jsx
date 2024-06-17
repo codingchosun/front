@@ -1,14 +1,16 @@
 // 로그인 페이지
 import React, { useState } from 'react';
-import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api"
 import axios from "axios";
+import "./Login.css";
+import {useAuth} from "./AuthContext";
 
 const Login = () => {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   //로그인 통신
   const handleLogin = async (e) => {
@@ -18,8 +20,6 @@ const Login = () => {
     formData.append('loginId', loginId);
     formData.append('password', password);
 
-    console.log("아이디 타입:",typeof(loginId)) //임시로 확인하고 지워야할것
-    console.log("비밀번호 타입:",typeof(password)) //임시로 확인하고 지워야할것
     try {
       const response = await axios.post("http://localhost:8090/login", formData,{
         withCredentials: true,
@@ -28,11 +28,10 @@ const Login = () => {
         }
       });
 
-
-
       if(response.status===200){
         console.log("RESPONSE:", response);
-        sessionStorage.setItem('isLogin', 'ok'); //sessionStorage에 로그인 표시 'ok' 저장
+        sessionStorage.setItem('succeed', 'ok');
+        login();
       }
       console.log("로그인 성공");
       navigate("/main");

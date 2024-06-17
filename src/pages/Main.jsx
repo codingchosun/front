@@ -1,11 +1,11 @@
-// Main.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import axios from "axios";
 import "./Main.css";
 import cat from "../images/고양이.jpg";
-import api from "../api"
+import api from "../api";
+
+// 검색창
 const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
     const navigate = useNavigate();
 
@@ -25,6 +25,7 @@ const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
     );
 };
 
+// 해시태그(추천)
 const Hashtags = ({ hashtags }) => {
     return (
         <div className="main__hashtags">
@@ -35,19 +36,21 @@ const Hashtags = ({ hashtags }) => {
     );
 };
 
-const cutContent=(content, maxLength) => {
-    if ( content.length <= maxLength){
+// 게시물 길이가 길면 잘라줌
+const cutContent = (content, maxLength) => {
+    if (content.length <= maxLength) {
         return content;
     }
-    return content.substring(0,maxLength)+'...';
+    return content.substring(0, maxLength) + '...';
 };
 
+// 게시물
 const Posts = ({ posts = [], title }) => {
     const navigate = useNavigate();
     const handlePostClick = (postId) => {
         navigate('/party', { state: { postId } });
     };
-
+    // 게시물이 한 개도 없을 때 출력
     if (posts.length === 0) {
         return <div className="main__posts-empty">게시물이 없습니다.</div>;
     }
@@ -55,14 +58,13 @@ const Posts = ({ posts = [], title }) => {
     return (
         <div className="main__posts">
             <h2 className="main__posts-title">{title}</h2>
-            { posts.map((post) => (
+            {posts.map((post) => (
                 <div key={post.id} className="main__post" onClick={() => handlePostClick(post.id)}>
                     <img src={cat} alt="default" className="main__post-default" />
-
                     <div className="main__post-content">
                         <div className="main__post-id">번호: {post.id}</div>
-                        <div className="main__post-title">제목: {cutContent(post.title,8)}</div>
-                        <div className="main__post-content">내용: {cutContent(post.contents,30)}</div>
+                        <div className="main__post-title">제목: {cutContent(post.title, 8)}</div>
+                        <div className="main__post-content">내용: {cutContent(post.contents, 30)}</div>
                     </div>
                 </div>
             ))}
@@ -71,45 +73,40 @@ const Posts = ({ posts = [], title }) => {
 };
 
 const Main = () => {
-    const { isLogin, userId } = useAuth();
+    const { isLogin } = useAuth();
     const [searchMeeting, setSearchMeeting] = useState('');
     const [posts, setPosts] = useState([]);
-    const [allPosts, setAllPosts]=useState([]);
+    const [allPosts, setAllPosts] = useState([]);
     const [hashtags, setHashtags] = useState([]);
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10);
+    const [page] = useState(1);
+    const [size] = useState(10);
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (loginStatus) => {
         try {
-            let allPostsUrl = `/posts?page=${page}&size=${size}`;
-            console.log(`모든 게시물 URL: ${allPostsUrl}`);
-            let allPostsResponse = await api.get(allPostsUrl, {
+            const allPostsUrl = `/posts?page=${page}&size=${size}`;
+            const allPostsResponse = await api.get(allPostsUrl, {
                 withCredentials: true
             });
 
-            let allPostResponses = allPostsResponse.data.no_login_posts_responses.content;
+            const allPostResponses = allPostsResponse.data.no_login_posts_responses.content;
 
             let PostResponses = [];
             let hashtagDtoList = [];
 
-            if (isLogin) {
-                let PostsUrl = `/posts/login?page=${page}&size=${size}`;
-                console.log(`유저 게시물 URL: ${PostsUrl}`);
-                let taggedPostsResponse = await api.get(PostsUrl, {
+
+            if (loginStatus) {
+                const PostsUrl = `/posts/login?page=${page}&size=${size}`;
+                const taggedPostsResponse = await api.get(PostsUrl, {
                     withCredentials: true
                 });
-
-                console.log('로그인후 받는 데이터들:', taggedPostsResponse.data.login_posts_responses);
                 PostResponses = taggedPostsResponse.data.login_posts_responses.content;
                 hashtagDtoList = taggedPostsResponse.data.hashtag_dto_list || [];
             } else {
                 hashtagDtoList = allPostsResponse.data.hashtag_dto_list || [];
             }
-
-            console.log('해시태그:', hashtagDtoList);
 
             setPosts(PostResponses);
             setAllPosts(allPostResponses);
@@ -121,17 +118,11 @@ const Main = () => {
     };
 
     useEffect(() => {
-        console.log('로그인 여부:', isLogin);
-        console.log('location.state:', location.state);
-        console.log('아이디:', userId);
-
-        fetchPosts();
-
-        if (location.state && location.state.newPostId) {
-            fetchPosts();
-            window.history.replaceState({}, document.title);
+        if (isLogin !== null) {
+            console.log(`isLogin 상태: ${isLogin}`);
+            fetchPosts(isLogin);
         }
-    }, [isLogin, location.state, userId, page, size]);
+    }, [isLogin, location.state, page, size]);
 
     const handleNewPost = () => {
         navigate('/newpost');
@@ -147,13 +138,13 @@ const Main = () => {
                 <Hashtags hashtags={hashtags} />
 
                 <div className="main__posts-container">
-                    { isLogin && (
+                    {isLogin && (
                         <div className="main__hashtags-posts">
                             <Posts posts={posts} title="추천 게시물" />
                         </div>
                     )}
                     <div className="main__allposts">
-                        <Posts posts={allPosts} title="전체 게시물"/>
+                        <Posts posts={allPosts} title="전체 게시물" />
                         <button onClick={handleNewPost} className="main__newpost-button">글 작성</button>
                     </div>
                 </div>

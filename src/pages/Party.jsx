@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import axios from 'axios';
-import './Party.css';
 import api from "../api";
+import './Party.css';
 
 const Party = () => {
     const { isLogin, userId } = useAuth();
@@ -27,9 +26,6 @@ const Party = () => {
     const [removeImages, setRemoveImages] = useState([]);
 
     useEffect(() => {
-        console.log('userId: ',userId);
-        console.log('postId: ', postId);
-
         if (postId) {
             fetchPostDetails();
         }
@@ -80,7 +76,7 @@ const Party = () => {
 
     const handleJoin = async () => {
         try {
-            const response = await api.post(`/posts/${postId}/participant`,{},{
+            const response = await api.post(`/posts/${postId}/participant`, {}, {
                 withCredentials: true
             });
             if (response.status === 200) {
@@ -93,7 +89,7 @@ const Party = () => {
 
     const handleLeave = async () => {
         try {
-            const response = await api.post(`/posts/${postId}/leave`,{},{
+            const response = await api.post(`/posts/${postId}/leave`, {}, {
                 withCredentials: true
             });
             if (response.status === 200) {
@@ -105,7 +101,7 @@ const Party = () => {
     };
 
     const handleManage = () => {
-        navigate('/manage');
+        navigate('/manage', { state: { postId } });
     };
 
     const handleAddComment = async () => {
@@ -142,9 +138,11 @@ const Party = () => {
             console.error('게시물 수정 에러:', error);
         }
     };
+
     const handleParticipantClick = (participantId) => {
         navigate('/profile',{state: {participantId}});
     };
+
     const handleEditClick = () => {
         setEditTitle(post.title);
         setEditContent(post.content);

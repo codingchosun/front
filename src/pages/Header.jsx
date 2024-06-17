@@ -1,5 +1,5 @@
 // GNB(Global Navigation Bar) : 최상단 메뉴
-import React from "react";
+import React,{useEffect} from "react";
 import { useAuth } from "./AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/로고.png";
@@ -9,6 +9,23 @@ import api from "../api"
 const Header = () => {
     const { isLogin, logout } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            try {
+                const response = await api.get("http://localhost:8090/getloginuser", {
+                    withCredentials: true
+                });
+                console.log("checkUser:", response.data);
+
+
+            } catch (error) {
+                console.error("사용자 확인 오류:", error);
+            }
+        };
+
+        checkUser();
+    }, []);
 
     const handleLogout = async () => {
         try {

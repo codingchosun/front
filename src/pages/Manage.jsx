@@ -23,7 +23,7 @@ const Manage = () => {
 
     const fetchParticipants = async () => {
         try {
-            const response = await fetch('http://localhost:8090/api/participants');
+            const response = await fetch('http://localhost:8090/participants');
             if (response.ok) {
                 const data = await response.json();
                 setParticipants(data);
@@ -43,7 +43,7 @@ const Manage = () => {
 
     const handleExpelParticipants = async () => {
         try {
-            const response = await fetch('http://localhost:8090/api/expel', {
+            const response = await fetch('http://localhost:8090/expel', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

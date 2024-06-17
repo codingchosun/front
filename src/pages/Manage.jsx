@@ -20,6 +20,10 @@ const Manage = () => {
 
     const fetchParticipants = async () => {
         try {
+            const response = await fetch('http://localhost:8090/participants');
+            if (response.ok) {
+                const data = await response.json();
+                setParticipants(data);
             const response = await api.get(`/posts/${postId}/participant`);
             if (response.status === 200) {
                 setParticipants(response.data);
@@ -44,6 +48,25 @@ const Manage = () => {
             }));
             fetchParticipants();
             setSelectedParticipants([]);
+            const response = await fetch('http://localhost:8090/expel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ participantIds: selectedParticipants }),
+            });
+          
+            if (response.ok) {
+                alert('선택된 참가자가 퇴출되었습니다.');
+            const response = await api.post(`/posts/${postId}/removeParticipants`, {
+                user_ids: selectedParticipants
+            }, { withCredentials: true });
+
+            if (response.status === 200) {
+                alert('선택한 참가자가 추방되었습니다.');
+                fetchParticipants();
+                setSelectedParticipants([]);
+            }
         } catch (error) {
             console.error('참가자 추방 에러:', error);
         }

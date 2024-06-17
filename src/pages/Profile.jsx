@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./MyPage.css";
 import api from "../api";
 import { useAuth } from "./AuthContext";
 
-const MyPage = () => {
-    const { isLogin, logout } = useAuth();
+const Profile = () => {
+    const { isLogin } = useAuth();
     const navigate = useNavigate();
+    const location=useLocation();
+
     const [userId, setUserId] = useState(null);
     const [loginId, setLoginId]=useState(null);
+    const participant=location.state ? location.state.participantId : null;
+
+
     const [nickname, setNickname] = useState('');
     const [introduction, setIntroduction] = useState('');
     const [email, setEmail] = useState('');
@@ -43,7 +48,7 @@ const MyPage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await api.get(`/profile/${loginId}`, { withCredentials: true });
+                const response = await api.get(`/profile/${participant}`, { withCredentials: true });
                 const data = response.data;
                 setNickname(data.nickname);
                 setIntroduction(data.introduction);
@@ -61,29 +66,12 @@ const MyPage = () => {
         }
     }, [userId]);
 
-    const handleDeleteAccount = async () => {
-        try {
-            const response = await api.get(`/deleteAccount`, { withCredentials: true });
-            const data = response.data;
-            if (data.success) {
-                alert('회원탈퇴가 완료되었습니다');
-                console.log(data.body);
-                logout();
-                navigate('/main');
-            } else {
-                alert('회원탈퇴 실패.');
-            }
-        } catch (error) {
-            console.error("회원탈퇴 에러:", error);
-            alert('회원탈퇴 에러 발생.');
-        }
-    };
 
 
 
     return (
         <div className="mypageContainer">
-            <h1>{nickname} 님의 마이페이지 입니다</h1>
+            <h1>{nickname} 님의 프로필 페이지 입니다</h1>
 
             <div className="introductionContainer">
                 <label>자기소개</label>
@@ -148,17 +136,8 @@ const MyPage = () => {
                 </div>
             </div>
 
-            <div className="buttonContainer">
-                <Link to="/useredit">
-                    <button>수정페이지</button>
-                </Link>
-                <Link to="/myparty">
-                    <button>모임 목록</button>
-                </Link>
-                <button onClick={handleDeleteAccount}>회원탈퇴</button>
-            </div>
         </div>
     );
 };
 
-export default MyPage;
+export default Profile;

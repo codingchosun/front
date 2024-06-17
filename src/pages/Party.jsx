@@ -140,7 +140,7 @@ const Party = () => {
     };
 
     const handleParticipantClick = (participantId) => {
-        navigate(`/profile/${participantId}`);
+        navigate('/profile',{state: {participantId}});
     };
 
     const handleEditClick = () => {
@@ -184,7 +184,7 @@ const Party = () => {
                 <h2>참가자 명단</h2>
                 <ul>
                     {participants.map((participant, index) => (
-                        <li key={index} onClick={() => handleParticipantClick(participant.user_id)}>{participant.nickname}</li>
+                        <li key={index} onClick={() => handleParticipantClick(participant.login_id)}>{participant.nickname}</li>
                     ))}
                 </ul>
                 {isLogin && (

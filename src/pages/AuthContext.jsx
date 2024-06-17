@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        const storedIsLogin = sessionStorage.getItem('isLogin');
+        const storedIsLogin = sessionStorage.getItem('succeed');
         if (storedIsLogin === 'ok') {
             setIsLogin(true);
         }
@@ -17,12 +17,12 @@ export const AuthProvider = ({ children }) => {
 
     const login = () => {
         setIsLogin(true);
-        sessionStorage.setItem('isLogin', 'true');
+        sessionStorage.setItem('succeed', 'ok');
     };
 
     const logout = () => {
         setIsLogin(false);
-        sessionStorage.removeItem('isLogin');
+        sessionStorage.removeItem('succeed');
     };
 
     return (

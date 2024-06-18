@@ -5,9 +5,12 @@ import "./UserEdit.css";
 import axios from "axios";
 import api from "../api";
 const UserEdit = () => {
-    const { isLogin, userId } = useAuth();
+    const { isLogin } = useAuth();
     const navigate = useNavigate();
 
+    const [loginId, setLoginId]=useState(null);
+
+    //회원정보
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [genderCode, setGenderCode] = useState("");
@@ -16,42 +19,52 @@ const UserEdit = () => {
     const [hashList, setHashList] = useState("");
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchUserId = async () => {
             try {
-                const response = await api.get(`/profile/${userId}`, { withCredentials: true });
-                const data = response.data;
+                const userResponse  = await api.get("http://localhost:8090/getloginuser", {
+                    withCredentials: true
+                });
+                const  userId=userResponse.data.user_id;
+                const  loginId=userResponse.data.login_id;
+                setLoginId(loginId);
+                console.log("userId: ", userId);
+                console.log("loginId: ", loginId);
 
-                setEmail(data.email);
-                setNickname(data.nickname);
-                setIntroduction(data.introduction);
-                setHashList(data.hash_names.join(" "));
+                const profileResponse = await api.get(`/profile/${loginId}`, { withCredentials: true });
+                const profileData = profileResponse.data;
+                console.log("profileData: ", profileData);
 
-                console.log("upload: ", data);
+                setEmail(profileData.email);
+                setNickname(profileData.nickname);
+                setIntroduction(profileData.introduction);
+                setHashList(profileData.hash_names.join(" "));
 
             } catch (error) {
-                console.error("회원정보 가져오기 에러:", error);
+                console.error("데이터 불러오기 오류:", error);
             }
         };
-        console.log('userId: ',userId);
-        if (isLogin) {
-            fetchUserData();
-        } else {
-            navigate('/login');
-        }
-    }, [isLogin, navigate, userId]);
 
+        // 로그인 값이 true 이면 새로고침
+        if (isLogin) {
+            fetchUserId();
+        }
+    }, [isLogin, navigate]);
+
+    // 회원정보 업데이트 이벤트
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post(`/profile/${userId}`, {
+            const response = await api.post(`/profile/${loginId}`, {
                 password,
                 email,
                 genderCode,
                 nickname,
                 introduction,
-                hashList: hashList.split(" ").map(tag => `#${tag.trim()}`)
+                hashList: hashList.split(" ").map(tag => `${tag.trim()}`)
             }, { withCredentials: true });
+
             console.log("update: ", response.data);
+
             if (response.status === 200) {
                 alert("회원정보가 성공적으로 수정되었습니다.");
                 navigate("/mypage");

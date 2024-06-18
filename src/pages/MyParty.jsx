@@ -6,17 +6,40 @@ import axios from 'axios';
 import './MyParty.css';
 import api from "../api"
 const MyParty = () => {
-    const { isLogin, userId } = useAuth();
+    const { isLogin } = useAuth();
     const navigate = useNavigate();
 
+    const [userId, setUserId] = useState(null);
+    const [loginId, setLoginId]=useState(null);
+
     const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await api.get("http://localhost:8090/getloginuser", {
+                    withCredentials: true
+                });
+                setUserId(response.data.user_id);
+                setLoginId(response.data.login_id);
+                console.log("userId: ", userId);
+                console.log("loginId: ", loginId);
+            } catch (error) {
+                console.error("사용자 확인 오류:", error);
+            }
+        };
+
+        if (isLogin) {
+            fetchUserId();
+        }
+    }, [loginId]);
 
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 const response = await api.get('/mypost', { withCredentials: true });
-                if (response.data.http_status === "OK" && response.data.success){
+                if (response.data.success){
                     setPosts(response.data.body);
                 }
             } catch (error) {

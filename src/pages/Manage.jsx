@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../api';
+
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import api from "../api";
+import axios from "axios";
+
+
 import './Manage.css';
 
 const Manage = () => {
@@ -9,6 +14,7 @@ const Manage = () => {
     const postId = location.state ? location.state.postId : undefined;
     const [participants, setParticipants] = useState([]);
     const [selectedParticipants, setSelectedParticipants] = useState([]);
+
 
     useEffect(() => {
         if (postId) {
@@ -24,9 +30,10 @@ const Manage = () => {
             if (response.ok) {
                 const data = await response.json();
                 setParticipants(data);
-            const response = await api.get(`/posts/${postId}/participant`);
-            if (response.status === 200) {
-                setParticipants(response.data);
+                const response = await api.get(`/posts/${postId}/participant`);
+                if (response.status === 200) {
+                    setParticipants(response.data);
+                }
             }
         } catch (error) {
             console.error('참가자 목록 가져오기 에러:', error);
@@ -67,6 +74,7 @@ const Manage = () => {
                 fetchParticipants();
                 setSelectedParticipants([]);
             }
+        }
         } catch (error) {
             console.error('참가자 추방 에러:', error);
         }

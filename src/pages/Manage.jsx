@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
+
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import api from "../api";
 import axios from "axios";
+
+
 import './Manage.css';
 
 const Manage = () => {
-    const [participants, setParticipants] = useState([]);
-    const [selectedParticipants, setSelectedParticipants] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
     const postId = location.state ? location.state.postId : undefined;
+    const [participants, setParticipants] = useState([]);
+    const [selectedParticipants, setSelectedParticipants] = useState([]);
 
 
     useEffect(() => {
         if (postId) {
             fetchParticipants();
+        } else {
+            navigate(-1);
         }
-    }, [postId]);
+    }, [postId, navigate]);
 
     const fetchParticipants = async () => {
         try {
@@ -31,20 +36,25 @@ const Manage = () => {
                 }
             }
         } catch (error) {
-                console.error('참가자 정보 에러:', error);
+            console.error('참가자 목록 가져오기 에러:', error);
         }
     };
 
-    const handleSelectParticipant = (userId) => {
+    const handleSelectParticipant = (participantId) => {
         setSelectedParticipants(prevSelected =>
-            prevSelected.includes(userId)
-                ? prevSelected.filter(id => id !== userId)
-                : [...prevSelected, userId]
+            prevSelected.includes(participantId)
+                ? prevSelected.filter(id => id !== participantId)
+                : [...prevSelected, participantId]
         );
     };
 
-    const handleKickParticipants = async () => {
+    const handleRemoveParticipants = async () => {
         try {
+            await Promise.all(selectedParticipants.map(async (participantId) => {
+                await api.post(`/posts/${postId}/admin/remove`, { removeId: participantId });
+            }));
+            fetchParticipants();
+            setSelectedParticipants([]);
             const response = await fetch('http://localhost:8090/expel', {
                 method: 'POST',
                 headers: {
@@ -52,6 +62,7 @@ const Manage = () => {
                 },
                 body: JSON.stringify({ participantIds: selectedParticipants }),
             });
+          
             if (response.ok) {
                 alert('선택된 참가자가 퇴출되었습니다.');
             const response = await api.post(`/posts/${postId}/removeParticipants`, {
@@ -66,33 +77,27 @@ const Manage = () => {
         }
         } catch (error) {
             console.error('참가자 추방 에러:', error);
-            alert('참가자를 추방하는 중 오류가 발생했습니다.');
         }
-    };
-
-    const handleCancel = () => {
-        navigate(-1);
     };
 
     return (
         <div className="manage-container">
             <h1>참가자 관리</h1>
-            <div className="participant-list">
+            <ul className="participant-list">
                 {participants.map(participant => (
-                    <div key={participant.user_id} className="participant-item">
-                        <input
-                            type="checkbox"
-                            checked={selectedParticipants.includes(participant.user_id)}
-                            onChange={() => handleSelectParticipant(participant.user_id)}
-                        />
-                        <span>{participant.nickname}</span>
-                    </div>
+                    <li key={participant.user_id} className="participant-item">
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={selectedParticipants.includes(participant.user_id)}
+                                onChange={() => handleSelectParticipant(participant.user_id)}
+                            />
+                            {participant.nickname}
+                        </label>
+                    </li>
                 ))}
-            </div>
-            <div className="manage-buttons">
-                <button onClick={handleKickParticipants} className="kick-button">추방</button>
-                <button onClick={handleCancel} className="cancel-button">취소</button>
-            </div>
+            </ul>
+            <button onClick={handleRemoveParticipants} className="remove-button">선택한 참가자 추방</button>
         </div>
     );
 };

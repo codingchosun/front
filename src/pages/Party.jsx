@@ -6,9 +6,11 @@ import './Party.css';
 import api from "../api";
 
 const Party = () => {
-    const { isLogin, userId } = useAuth();
+    const { isLogin } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+    const [userId, setUserId] = useState(null);
+    const [loginId, setLoginId]=useState(null);
 
     const [post, setPost] = useState({});
     const [images, setImages] = useState([]);
@@ -25,6 +27,27 @@ const Party = () => {
     const [addTags, setAddTags] = useState([]);
     const [removeTags, setRemoveTags] = useState([]);
     const [removeImages, setRemoveImages] = useState([]);
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await api.get("http://localhost:8090/getloginuser", {
+                    withCredentials: true
+                });
+                setUserId(response.data.user_id);
+                setLoginId(response.data.login_id);
+                console.log("userId: ", userId);
+                console.log("loginId: ", loginId);
+            } catch (error) {
+                console.error("사용자 확인 오류:", error);
+            }
+        };
+
+        if (isLogin) {
+            fetchUserId();
+        }
+    }, []);
+
 
     useEffect(() => {
         console.log('userId: ',userId);
@@ -45,7 +68,7 @@ const Party = () => {
                 fetchParticipants();
 
                 // 현재 사용자가 게시글 작성자인지 확인
-                if (response.data.post_response.user_dto.user_id === userId) {
+                if (response.data.post_response.user_dto.user_id) {
                     setIsOrganizer(true);
                 } else {
                     setIsOrganizer(false);

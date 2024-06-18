@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import api from "../api";
+import axios from "axios";
 import './Manage.css';
 
 const Manage = () => {
@@ -10,6 +11,7 @@ const Manage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const postId = location.state ? location.state.postId : undefined;
+
 
     useEffect(() => {
         if (postId) {
@@ -23,12 +25,13 @@ const Manage = () => {
             if (response.ok) {
                 const data = await response.json();
                 setParticipants(data);
-            const response = await api.get(`/posts/${postId}/participant`);
-            if (response.status === 200) {
-                setParticipants(response.data);
+                const response = await api.get(`/posts/${postId}/participant`);
+                if (response.status === 200) {
+                    setParticipants(response.data);
+                }
             }
         } catch (error) {
-            console.error('참가자 정보 에러:', error);
+                console.error('참가자 정보 에러:', error);
         }
     };
 
@@ -60,6 +63,7 @@ const Manage = () => {
                 fetchParticipants();
                 setSelectedParticipants([]);
             }
+        }
         } catch (error) {
             console.error('참가자 추방 에러:', error);
             alert('참가자를 추방하는 중 오류가 발생했습니다.');

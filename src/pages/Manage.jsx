@@ -9,12 +9,12 @@ import axios from "axios";
 import './Manage.css';
 
 const Manage = () => {
+
     const location = useLocation();
     const navigate = useNavigate();
     const postId = location.state ? location.state.postId : undefined;
     const [participants, setParticipants] = useState([]);
     const [selectedParticipants, setSelectedParticipants] = useState([]);
-
 
     useEffect(() => {
         if (postId) {
@@ -62,7 +62,7 @@ const Manage = () => {
                 },
                 body: JSON.stringify({ participantIds: selectedParticipants }),
             });
-          
+
             if (response.ok) {
                 alert('선택된 참가자가 퇴출되었습니다.');
             const response = await api.post(`/posts/${postId}/removeParticipants`, {

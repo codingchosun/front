@@ -126,7 +126,11 @@ const Main = () => {
     }, [isLogin, location.state, page, size]);
 
     const handleNewPost = () => {
-        navigate('/newpost');
+        if (isLogin) {
+            navigate('/newpost');
+        } else {
+            alert('로그인을 해주세요');
+        }
     };
 
     return (

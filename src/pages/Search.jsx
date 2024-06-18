@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./Search.css";
 import cat from "../images/고양이.jpg";
 import api from "../api";
+
 const cutContent = (content, maxLength) => {
     if (content.length <= maxLength) {
         return content;
@@ -17,22 +18,24 @@ const encodeHash = (searchTerm) => {
 
 const Search = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { searchTerm } = location.state || {};
     const [posts, setPosts] = useState([]);
-    const [page]=useState(1);
-    const [size]=useState(2);
+    const [page] = useState(1);
+    const [size] = useState(2);
 
     useEffect(() => {
         const fetchSearchResults = async () => {
             try {
                 const encodedSearchTerm = encodeHash(searchTerm);
-                const response = await api.get(`/posts/research?researchQuery=${encodedSearchTerm}&page=${page}&size=${size}`,{
+                const response = await api.get(`/posts/research?researchQuery=${encodedSearchTerm}&page=${page}&size=${size}`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
                 });
 
                 const searchResults = response.data.content;
+
                 setPosts(searchResults);
             } catch (error) {
                 console.error('검색 결과 에러:', error);
@@ -41,10 +44,12 @@ const Search = () => {
 
         if (searchTerm) {
             fetchSearchResults();
-            console.log("searchTerm: ",searchTerm);
         }
-
     }, [searchTerm]);
+
+    const handlePostClick = (postId) => {
+        navigate('/party', { state: { postId } });
+    };
 
     if (!searchTerm) {
         return <div className="search__empty">검색어를 입력하세요.</div>;
@@ -59,7 +64,7 @@ const Search = () => {
             <h1>검색 결과</h1>
             <div className="search__posts">
                 {posts.map((post) => (
-                    <div key={post.id} className="search__post">
+                    <div key={post.id} className="search__post" onClick={() => handlePostClick(post.id)}>
                         {post.path ? (
                             <img src={`${post.path}`} alt="post" className="search__post-default" />
                         ) : (

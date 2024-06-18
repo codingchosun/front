@@ -1,4 +1,3 @@
-//게시물 쓰기 페이지
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -13,10 +12,10 @@ const NewPost = () => {
     const [date, setDate] = useState(new Date());
     const [content, setContent] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
-    const [images, setImages]=useState([]);
+    const [images, setImages] = useState([]);
     const navigate = useNavigate();
 
-    const handleImageChange=(e)=>{
+    const handleImageChange = (e) => {
         setImages([...e.target.files]);
     };
 
@@ -48,9 +47,9 @@ const NewPost = () => {
 
             const newPostId = response.data.body;
 
-            if (images.length > 0){
-                const formData=new FormData();
-                images.forEach( (image, index) => {
+            if (images.length > 0) {
+                const formData = new FormData();
+                images.forEach((image, index) => {
                     formData.append(`files`, image);
                 });
 
@@ -105,7 +104,10 @@ const NewPost = () => {
                     <DatePicker
                         selected={date}
                         onChange={(date) => setDate(date)}
-                        dateFormat="yyyy-MM-dd"
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="yyyy-MM-dd HH:mm"
                         className="date-picker"
                     />
                 </div>

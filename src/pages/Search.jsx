@@ -33,7 +33,6 @@ const Search = () => {
                 });
 
                 const searchResults = response.data.content;
-
                 setPosts(searchResults);
             } catch (error) {
                 console.error('검색 결과 에러:', error);
@@ -42,7 +41,9 @@ const Search = () => {
 
         if (searchTerm) {
             fetchSearchResults();
+            console.log("searchTerm: ",searchTerm);
         }
+
     }, [searchTerm]);
 
     if (!searchTerm) {

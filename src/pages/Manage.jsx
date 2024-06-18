@@ -18,24 +18,27 @@ const Manage = () => {
     const [selectedParticipants, setSelectedParticipants] = useState([]);
 
     useEffect(() => {
-        if (true) {
+        if (postId>0) {
             fetchParticipants();
-        } else {
-            navigate(-1);
         }
     }, [postId, navigate]);
 
+    //참가자 목록
     const fetchParticipants = async () => {
         try {
-            const response = await api.get(`/posts/${postId}/participant`,{},{
+            const response = await api.get(`/posts/${postId}/participant`,{
                 withCredentials: true
                 });
+            if (response.status === 200) {
                 setParticipants(response.data);
-                console.log(response.data);
+            }
+                console.log("참가자목록: ",response.data);
         } catch (error) {
                 console.error('참가자 목록 가져오기 에러:', error);
         }
     };
+
+    //참가자 선택 처리 이벤트
     const handleSelectParticipant = (participantId) => {
         setSelectedParticipants(prevSelected =>
             prevSelected.includes(participantId)
@@ -44,25 +47,18 @@ const Manage = () => {
         );
     };
 
+    //참가자 추방 처리
     const handleRemoveParticipants = async () => {
         try {
             await Promise.all(selectedParticipants.map(async (participantId) => {
                 await api.post(`/posts/${postId}/admin/remove`, { removeId: participantId });
             }));
+
             fetchParticipants();
             setSelectedParticipants([]);
-            const response = await fetch('http://localhost:8090/expel', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ participantIds: selectedParticipants }),
-            });
 
-            if (response.ok) {
-                alert('선택된 참가자가 퇴출되었습니다.');
             const response = await api.post(`/posts/${postId}/removeParticipants`, {
-                user_ids: selectedParticipants
+                user_ids: selectedParticipants //추방할 사람 아이디 보내야됨
             }, { withCredentials: true });
 
             if (response.status === 200) {
@@ -70,7 +66,6 @@ const Manage = () => {
                 fetchParticipants();
                 setSelectedParticipants([]);
             }
-        }
         } catch (error) {
             console.error('참가자 추방 에러:', error);
         }

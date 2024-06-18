@@ -32,7 +32,7 @@ const Party = () => {
     const fetchUserIdAndPostDetails  = async () => {
         try {
             if (isLogin) {
-                const userIdResponse = await api.get("http://localhost:8090/getloginuser", {
+                const userIdResponse = await api.get("/getloginuser", {
                     withCredentials: true
                 });
                 setUserId(userIdResponse.data.user_id);

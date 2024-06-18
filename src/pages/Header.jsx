@@ -13,7 +13,7 @@ const Header = () => {
     useEffect(() => {
         const checkUser = async () => {
             try {
-                const response = await api.get("http://localhost:8090/getloginuser", {
+                const response = await api.get("/getloginuser", {
                     withCredentials: true
                 });
                 console.log("checkUser:", response.data);

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthContext';
 import api from "../api";
-import axios from "axios";
-
-
 import './Manage.css';
 
 const Manage = () => {
@@ -13,13 +8,15 @@ const Manage = () => {
     const navigate = useNavigate();
 
     const postId = location.state ? location.state.postId : undefined;
-    console.log("postId:",postId)
+
     const [participants, setParticipants] = useState([]);
     const [selectedParticipants, setSelectedParticipants] = useState([]);
 
     useEffect(() => {
-        if (postId>0) {
+        if (postId) {
             fetchParticipants();
+        } else {
+            navigate(-1); // postId가 없는 경우 이전 페이지로 이동
         }
     }, [postId, navigate]);
 
@@ -29,10 +26,13 @@ const Manage = () => {
             const response = await api.get(`/posts/${postId}/participant`,{
                 withCredentials: true
                 });
+
             if (response.status === 200) {
                 setParticipants(response.data);
             }
-                console.log("참가자목록: ",response.data);
+
+            console.log("참가자목록: ",response.data);
+
         } catch (error) {
                 console.error('참가자 목록 가져오기 에러:', error);
         }
@@ -51,21 +51,17 @@ const Manage = () => {
     const handleRemoveParticipants = async () => {
         try {
             await Promise.all(selectedParticipants.map(async (participantId) => {
-                await api.post(`/posts/${postId}/admin/remove`, { removeId: participantId });
+                await api.post(`/posts/${postId}/admin/remove`, {
+                    remove_id: participantId
+                }, {
+                    withCredentials: true
+                });
             }));
 
             fetchParticipants();
             setSelectedParticipants([]);
 
-            const response = await api.post(`/posts/${postId}/removeParticipants`, {
-                user_ids: selectedParticipants //추방할 사람 아이디 보내야됨
-            }, { withCredentials: true });
-
-            if (response.status === 200) {
-                alert('선택한 참가자가 추방되었습니다.');
-                fetchParticipants();
-                setSelectedParticipants([]);
-            }
+            alert('선택한 참가자가 추방되었습니다.');
         } catch (error) {
             console.error('참가자 추방 에러:', error);
         }

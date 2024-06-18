@@ -9,15 +9,16 @@ import axios from "axios";
 import './Manage.css';
 
 const Manage = () => {
-
     const location = useLocation();
     const navigate = useNavigate();
+
     const postId = location.state ? location.state.postId : undefined;
+    console.log("postId:",postId)
     const [participants, setParticipants] = useState([]);
     const [selectedParticipants, setSelectedParticipants] = useState([]);
 
     useEffect(() => {
-        if (postId) {
+        if (true) {
             fetchParticipants();
         } else {
             navigate(-1);
@@ -26,20 +27,15 @@ const Manage = () => {
 
     const fetchParticipants = async () => {
         try {
-            const response = await fetch('http://localhost:8090/participants');
-            if (response.ok) {
-                const data = await response.json();
-                setParticipants(data);
-                const response = await api.get(`/posts/${postId}/participant`);
-                if (response.status === 200) {
-                    setParticipants(response.data);
-                }
-            }
+            const response = await api.get(`/posts/${postId}/participant`,{},{
+                withCredentials: true
+                });
+                setParticipants(response.data);
+                console.log(response.data);
         } catch (error) {
-            console.error('참가자 목록 가져오기 에러:', error);
+                console.error('참가자 목록 가져오기 에러:', error);
         }
     };
-
     const handleSelectParticipant = (participantId) => {
         setSelectedParticipants(prevSelected =>
             prevSelected.includes(participantId)

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import './Party.css';
 import api from "../api";
+import './Party.css';
 
 const Party = () => {
     const { isLogin } = useAuth();
@@ -93,7 +94,7 @@ const Party = () => {
     // 모임 참가
     const handleJoin = async () => {
         try {
-            const response = await api.post(`/posts/${postId}/participant`,{},{
+            const response = await api.post(`/posts/${postId}/participant`, {}, {
                 withCredentials: true
             });
             if (response.status === 200) {
@@ -107,7 +108,7 @@ const Party = () => {
     // 모임 탈퇴
     const handleLeave = async () => {
         try {
-            const response = await api.post(`/posts/${postId}/leave`,{},{
+            const response = await api.post(`/posts/${postId}/leave`, {}, {
                 withCredentials: true
             });
             if (response.status === 200) {
@@ -120,7 +121,7 @@ const Party = () => {
 
     // 회원관리 페이지 이동(방장)
     const handleManage = () => {
-        navigate('/manage');
+        navigate('/manage', { state: { postId } });
     };
     
     // 댓글
@@ -159,8 +160,6 @@ const Party = () => {
             console.error('게시물 수정 에러:', error);
         }
     };
-
-    // 게시물 수정 클릭 이벤트
     const handleEditClick = () => {
         setEditTitle(post.title);
         setEditContent(post.content);
@@ -170,7 +169,7 @@ const Party = () => {
 
     // 유저 클릭 이벤트 ~ 프로필 페이지 이동
     const handleParticipantClick = (participantId) => {
-        navigate('/profile',{state: {participantId}});
+        navigate('/profile',{state: {participantId} } );
     };
 
 

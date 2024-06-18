@@ -1,59 +1,79 @@
-//매너점수 투표 페이지
-import React from 'react';
-import {useState} from "react";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import api from '../api';
+import './VotePage.css';
 
-const VotoPage=({currentUser}) =>{
-    //참가자 목록, 초기점수 설정
-    const [vote, setVote]=useState({
-        'user1' : 0,
-        'user2' : 0,
-        'user3' : 0
-    });
+const VotePage = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [participants, setParticipants] = useState([]);
+    const [ratings, setRatings] = useState({});
 
-    // 선택된 점수 관리
-    const [selectedScore, setSelectedScore] = useState({
-        'user1' : 0,
-        'user2' : 0,
-        'user3' : 0
-    });
+    useEffect(() => {
+        const fetchParticipants = async () => {
+            try {
+                const response = await api.get(`/mypost/${location.state.postId}`);
+                setParticipants(response.data);
+            } catch (error) {
+                console.error('참가자 정보 가져오기 에러:', error);
+            }
+        };
 
-    delete vote[currentUser]; //자기자신은 투표에서 제외
+        if (location.state && location.state.postId) {
+            fetchParticipants();
+        } else {
+            navigate(-1); // postId가 없으면 이전 페이지로 돌아가기
+        }
+    }, [location.state, navigate]);
 
-    // 점수 선택
-    const handleScoreChange=(user, score) => {
-        setSelectedScore(prevScore => ({
-            ...prevScore,
-            [user]:score
+    const handleRatingChange = (participantId, rating) => {
+        setRatings(prevRatings => ({
+            ...prevRatings,
+            [participantId]: parseInt(rating, 10)
         }));
     };
 
-    //투표 제출
-    const submitVote=()=>{
-        const updatedVote=Object.keys(selectedScore).reduce((i, user) => {
-            i[user] = vote[user] + Number(selectedScore[user]);
-            return i;
-        }, {...vote});
+    const handleSubmit = async () => {
+        const userValidationRequestList = Object.keys(ratings).map(participantId => ({
+            userId: parseInt(participantId, 10),
+            mannerScore: ratings[participantId]
+        }));
+
+        try {
+            const response = await api.post(`/mypost/${location.state.postId}`, {
+                userValidationRequestList
+            });
+
+            if (response.status === 200) {
+                navigate(-1); // 이전 페이지로 돌아가기
+            }
+        } catch (error) {
+            console.error('평가 제출 에러:', error);
+        }
     };
 
-    return(
-        <div>
-            {Object.keys(vote).map(user => (
-                <div key={user}>
-                    <lable>{user}</lable>
-                    <select
-                        value={selectedScore[user]}
-                        onChange={(e) => handleScoreChange(user, e.target.value)}
-                    >
-                        <option value="2">+2</option>
-                        <option value="1">+1</option>
-                        <option value="-1">-1</option>
-                        <option value="-2">-2</option>
-                    </select>
-                </div>
-            ))};
-            <button onClick={submitVote}>평가</button>
+    return (
+        <div className="vote-container">
+            <h1>참가자 평가</h1>
+            <ul className="participant-list">
+                {participants.map(participant => (
+                    <li key={participant.userId} className="participant-item">
+                        <span>{participant.nickname}</span>
+                        <select
+                            value={ratings[participant.userId] || ''}
+                            onChange={(e) => handleRatingChange(participant.userId, e.target.value)}
+                        >
+                            <option value="">점수 선택</option>
+                            {[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5].map(score => (
+                                <option key={score} value={score}>{score}</option>
+                            ))}
+                        </select>
+                    </li>
+                ))}
+            </ul>
+            <button onClick={handleSubmit} className="submit-button">평가 제출</button>
         </div>
     );
 };
 
-export default VotoPage;
+export default VotePage;

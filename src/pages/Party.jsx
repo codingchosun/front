@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import axios from 'axios';
 import './Party.css';
 import api from "../api";
 
@@ -19,6 +18,7 @@ const Party = () => {
     const [newComment, setNewComment] = useState('');
     const [isOrganizer, setIsOrganizer] = useState(false);
     const postId = location.state ? location.state.postId : undefined;
+
     // 수정된 정보들
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState('');
@@ -28,57 +28,45 @@ const Party = () => {
     const [removeTags, setRemoveTags] = useState([]);
     const [removeImages, setRemoveImages] = useState([]);
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const response = await api.get("http://localhost:8090/getloginuser", {
+    const fetchUserIdAndPostDetails  = async () => {
+        try {
+            if (isLogin) {
+                const userIdResponse = await api.get("http://localhost:8090/getloginuser", {
                     withCredentials: true
                 });
-                setUserId(response.data.user_id);
-                setLoginId(response.data.login_id);
+                setUserId(userIdResponse.data.user_id);
+                setLoginId(userIdResponse.data.login_id);
                 console.log("userId: ", userId);
                 console.log("loginId: ", loginId);
-            } catch (error) {
-                console.error("사용자 확인 오류:", error);
             }
-        };
+            if (postId) {
+                const postDetailResponse = await api.get(`/posts/${postId}`);
+                if (postDetailResponse.status === 200) {
+                    setPost(postDetailResponse.data.post_response);
+                    setImages(postDetailResponse.data.paged_image_response_list.content);
+                    setComments(postDetailResponse.data.paged_comment_response_list.content);
+                    fetchParticipants();
 
-        if (isLogin) {
-            fetchUserId();
-        }
-    }, []);
+                    console.log("확인:", postDetailResponse.data.post_response.user_dto);
 
-
-    useEffect(() => {
-        console.log('userId: ',userId);
-        console.log('postId: ', postId);
-
-        if (postId) {
-            fetchPostDetails();
-        }
-    }, [postId]);
-
-    const fetchPostDetails = async () => {
-        try {
-            const response = await api.get(`/posts/${postId}`);
-            if (response.status === 200) {
-                setPost(response.data.post_response);
-                setImages(response.data.paged_image_response_list.content);
-                setComments(response.data.paged_comment_response_list.content);
-                fetchParticipants();
-
-                // 현재 사용자가 게시글 작성자인지 확인
-                if (response.data.post_response.user_dto.user_id) {
-                    setIsOrganizer(true);
-                } else {
-                    setIsOrganizer(false);
+                    // 현재 사용자가 게시글 작성자인지 확인
+                    if (postDetailResponse.data.post_response.user_dto.user_id === userId) {
+                        setIsOrganizer(true);
+                    } else {
+                        setIsOrganizer(false);
+                    }
                 }
             }
         } catch (error) {
-            console.error('게시물 정보 에러:', error);
+            console.error("사용자 확인 오류:", error);
         }
     };
 
+    useEffect(() => {
+        fetchUserIdAndPostDetails();
+    }, [isLogin, postId, userId]);
+
+    // 참가자 확인
     const fetchParticipants = async () => {
         try {
             const response = await api.get(`/posts/${postId}/participant`);
@@ -90,6 +78,7 @@ const Party = () => {
         }
     };
 
+    // 댓글
     const fetchComments = async () => {
         try {
             const response = await api.get(`/posts/${postId}/comments`);
@@ -101,6 +90,7 @@ const Party = () => {
         }
     };
 
+    // 모임 참가
     const handleJoin = async () => {
         try {
             const response = await api.post(`/posts/${postId}/participant`,{},{
@@ -114,6 +104,7 @@ const Party = () => {
         }
     };
 
+    // 모임 탈퇴
     const handleLeave = async () => {
         try {
             const response = await api.post(`/posts/${postId}/leave`,{},{
@@ -123,14 +114,16 @@ const Party = () => {
                 fetchParticipants();
             }
         } catch (error) {
-            console.error('모임 떠나기 에러:', error);
+            console.error('모임 탈퇴 에러:', error);
         }
     };
 
+    // 회원관리 페이지 이동(방장)
     const handleManage = () => {
         navigate('/manage');
     };
-
+    
+    // 댓글
     const handleAddComment = async () => {
         try {
             const response = await api.post(`/posts/${postId}/comments`, {
@@ -145,6 +138,7 @@ const Party = () => {
         }
     };
 
+    // 게시물 수정 (방장)
     const handleEditPost = async () => {
         const updatedPost = {
             title: editTitle,
@@ -159,21 +153,27 @@ const Party = () => {
             const response = await api.post(`/posts/${postId}/edit`, updatedPost, { withCredentials: true });
             if (response.status === 200) {
                 setIsEditing(false);
-                fetchPostDetails();
+                fetchUserIdAndPostDetails();
             }
         } catch (error) {
             console.error('게시물 수정 에러:', error);
         }
     };
-    const handleParticipantClick = (participantId) => {
-        navigate('/profile',{state: {participantId}});
-    };
+
+    // 게시물 수정 클릭 이벤트
     const handleEditClick = () => {
         setEditTitle(post.title);
         setEditContent(post.content);
         setEditDate(post.start_time);
         setIsEditing(true);
     };
+
+    // 유저 클릭 이벤트 ~ 프로필 페이지 이동
+    const handleParticipantClick = (participantId) => {
+        navigate('/profile',{state: {participantId}});
+    };
+
+
 
     return (
         <div className="party-container">

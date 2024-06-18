@@ -60,6 +60,7 @@ const Posts = ({ posts = [], title }) => {
             <h2 className="main__posts-title">{title}</h2>
             {posts.map((post) => (
                 <div key={post.id} className="main__post" onClick={() => handlePostClick(post.id)}>
+                    {/*조건문을 포스트에 이미지가 없으면 기본 이미지 설정할것 */}
                     <img src={cat} alt="default" className="main__post-default" />
                     <div className="main__post-content">
                         <div className="main__post-id">번호: {post.id}</div>

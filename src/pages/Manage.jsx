@@ -8,10 +8,10 @@ import './Manage.css';
 const Manage = () => {
     const [participants, setParticipants] = useState([]);
     const [selectedParticipants, setSelectedParticipants] = useState([]);
+
     const location = useLocation();
     const navigate = useNavigate();
     const postId = location.state ? location.state.postId : undefined;
-
 
     useEffect(() => {
         if (postId) {

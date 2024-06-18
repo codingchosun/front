@@ -21,7 +21,7 @@ const UserEdit = () => {
     useEffect(() => {
         const fetchUserId = async () => {
             try {
-                const userResponse  = await api.get("http://localhost:8090/getloginuser", {
+                const userResponse  = await api.get("/getloginuser", {
                     withCredentials: true
                 });
                 const  userId=userResponse.data.user_id;

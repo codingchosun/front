@@ -25,7 +25,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchUserId = async () => {
             try {
-                const response = await api.get("http://localhost:8090/getloginuser", {
+                const response = await api.get("/getloginuser", {
                     withCredentials: true
                 });
                 setUserId(response.data.user_id);

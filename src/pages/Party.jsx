@@ -32,7 +32,7 @@ const Party = () => {
     const fetchUserIdAndPostDetails  = async () => {
         try {
             if (isLogin) {
-                const userIdResponse = await api.get("http://localhost:8090/getloginuser", {
+                const userIdResponse = await api.get("/getloginuser", {
                     withCredentials: true
                 });
                 setUserId(userIdResponse.data.user_id);
@@ -172,7 +172,10 @@ const Party = () => {
         navigate('/profile',{state: {participantId} } );
     };
 
-
+    // 평가 버튼 이벤트
+    const handleVoteClick=() => {
+        navigate('/votepage',{state: {participants, postId} });
+    }
 
     return (
         <div className="party-container">
@@ -193,6 +196,7 @@ const Party = () => {
                     <>
                         <h1>{post.title}</h1>
                         <div className="party-info">
+                            <button onClick={handleVoteClick}>평가</button>
                             <p><strong>일시:</strong> {new Date(post.start_time).toLocaleString()}</p>
                             <p><strong>해시태그:</strong> {Array.isArray(post.hash_list) ? post.hash_list.join(', ') : ''}</p>
                             {images.length > 0 && images.map(image => (

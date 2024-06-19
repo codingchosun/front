@@ -1,60 +1,55 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./Main.css";
-import cat from "../images/고양이.jpg";
+import bridge from "../images/bridge.png";
 import api from "../api";
 
-
-// 검색창
 const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
     const navigate = useNavigate();
 
     const handleSearch = () => {
         navigate('/search', { state: { searchTerm: searchMeeting } });
     };
+
     return (
         <div className="main__search-bar">
             <input
                 type="text"
                 value={searchMeeting}
                 onChange={(e) => setSearchMeeting(e.target.value)}
-                placeholder="검색어를 입력하세요"
-            />
+                placeholder="검색어를 입력하세요" />
             <button onClick={handleSearch}>검색</button>
         </div>
     );
 };
 
-// 해시태그(추천)
 const Hashtags = ({ hashtags }) => {
+    const navigate=useNavigate();
+
     return (
-        <div className="main__hashtags">
-            {
-                hashtags.map((tag) => (
-                <div key = {tag.hashtag_id}>{tag.hashtag_name}</div>
-            ))}
+        <div className="main__hashtags"> {
+            hashtags.map((tag) => (
+            <div key = {tag.hashtag_id}>
+                {tag.hashtag_name}
+            </div> ))}
         </div>
     );
 };
 
-// 게시물 길이가 길면 ... 으로 표현
 const cutContent = (content, maxLength) => {
     if (content.length <= maxLength) {
-        return content;
-    }
+        return content; }
     return content.substring(0, maxLength) + '...';
 };
 
-
-// 게시물
 const Posts = ({ posts = [], title }) => {
     const navigate = useNavigate();
-    // 게시물 클릭 이벤트
+
     const handlePostClick = (postId) => {
-        navigate('/party', { state: { postId } }); // 'party'페이지에 객체 postId 값을 전달
+        navigate('/party', { state: { postId } });
     };
-    // 게시물이 한 개도 없을 때 출력 메시지
+
     if (posts.length === 0) {
         return <div className="main__posts-empty">게시물이 없습니다.</div>;
     }
@@ -68,7 +63,7 @@ const Posts = ({ posts = [], title }) => {
                     { post.path ? (
                         <img src={`${process.env.PUBLIC_URL}/postImage/${post.path}`} alt={post.title} className="main__post-thumbnail"/>
                         ) : (
-                        < img src={cat} alt="default" className="main__post-default"/>
+                        < img src={bridge} alt="default" className="main__post-default"/>
                         )
                     }
                     <div className="main__post-content">
@@ -81,6 +76,7 @@ const Posts = ({ posts = [], title }) => {
         </div>
     );
 };
+
 const Main = () => {
     const { isLogin } = useAuth();
 
@@ -88,48 +84,43 @@ const Main = () => {
     const [posts, setPosts] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
     const [hashtags, setHashtags] = useState([]);
-
-    // const [page, setPage] = useState(1);
-    const size=50; //set도 useState사용할것
-
-    // const [totalPages, setTotalPages]=useState(1); // 전체 페이지수
+    const [page, setPage] = useState(1);
+    const size=50;
 
     const navigate = useNavigate();
 
-
-    const fetchPosts = async (loginStatus, page) => {
+    const fetchPosts = async (loginStatus, page=1) => {
         try {
-            // 전체 게시물
             const allPostsResponse = await api.get(`/posts?page=${page}&size=${size}`, {withCredentials: true});
             const allPostResponses = allPostsResponse.data.no_login_posts_responses.content;
 
-            // const totalPages=allPostResponses.data.no_login_posts_responses.total_pages;
-
-            let PostResponses = [];
+            let postResponses = [];
             let hashtagDtoList = [];
 
-            // 로그인 되었을때, 해시태그 추천 게시물
             if (loginStatus) {
                 const hashtagPostsResponse = await api.get(`/posts/login?page=${page}&size=${size}`, {withCredentials: true });
-                PostResponses = hashtagPostsResponse.data.login_posts_responses.content;
+                postResponses = hashtagPostsResponse.data.login_posts_responses.content;
                 hashtagDtoList = hashtagPostsResponse.data.hashtag_dto_list || [];
             } else {
                 hashtagDtoList = allPostsResponse.data.hashtag_dto_list || [];
             }
-            setPosts(PostResponses);
+
+            setPosts(postResponses);
             setAllPosts(allPostResponses);
             setHashtags(hashtagDtoList);
+
         } catch (error) {
             console.error('게시물 에러:', error);
+            alert(error);
         }
     };
 
     useEffect(() => {
         if (isLogin !== null) {
             console.log(`isLogin 상태: ${isLogin}`); //나중에 지울것
-            fetchPosts(isLogin);
+            fetchPosts(isLogin,page);
         }
-    }, [isLogin]);
+    }, [isLogin],page);
 
     const handleNewPost = () => {
         if (isLogin) {
@@ -144,12 +135,10 @@ const Main = () => {
             <div className="main-page">
                 <SearchBar
                     searchMeeting={searchMeeting}
-                    setSearchMeeting={setSearchMeeting}
-                />
+                    setSearchMeeting={setSearchMeeting} />
                 <Hashtags hashtags={hashtags} />
-
                 <div className="main__posts-container">
-                    {isLogin && (
+                    { isLogin && (
                         <div className="main__hashtags-posts">
                             <Posts posts={posts} title="[ 추천 게시물 ]" />
                         </div>

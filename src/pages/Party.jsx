@@ -6,7 +6,6 @@ import api from "../api";
 
 const Party = () => {
     const { isLogin } = useAuth();
-
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -27,6 +26,9 @@ const Party = () => {
     const [editContent, setEditContent] = useState('');
     const [editDate, setEditDate] = useState('');
     const [alterTags, setAlterTags] = useState('');
+
+    const [deleteImageIds, setDeleteImageIds] = useState([]);
+    const [newImages, setNewImages] = useState([]);
 
     const fetchUserIdAndPostDetails = async () => {
         try {
@@ -151,17 +153,50 @@ const Party = () => {
             const response = await api.post(`/posts/${postId}/edit`, updatedPost, { withCredentials: true });
             if (response.status === 200) {
                 setIsEditing(false);
+
+                // 이미지 삭제 통신
+                if (deleteImageIds.length > 0) {
+                    const deletePromises = deleteImageIds.map(imageId =>
+                        api.post(`/posts/${postId}/deleteimage`, { delete_image_id: imageId }, { withCredentials: true })
+                    );
+                    await Promise.all(deletePromises);
+                }
+
+                // 새 이미지 추가 통신
+                if (newImages.length > 0) {
+                    const formData = new FormData();
+                    newImages.forEach(image => formData.append('files', image));
+                    await api.post(`/posts/${postId}/images`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                        withCredentials: true
+                    });
+                }
+
                 fetchUserIdAndPostDetails();
             }
         } catch (error) {
             console.error('게시물 수정 에러:', error);
         }
     };
+
     const handleEditClick = () => {
         setEditTitle(post.title);
         setEditContent(post.content);
         setEditDate(post.start_time);
+        setDeleteImageIds([]);
+        setNewImages([]);
         setIsEditing(true);
+    };
+
+    const handleImageDelete = (imageId) => {
+        setDeleteImageIds([...deleteImageIds, imageId]);
+        setImages(images.filter(image => image.image_id !== imageId));
+    };
+
+    const handleNewImages = (e) => {
+        setNewImages([...newImages, ...Array.from(e.target.files)]);
     };
 
     // 유저 클릭 이벤트 ~ 프로필 페이지 이동
@@ -172,7 +207,7 @@ const Party = () => {
     // 평가 버튼 이벤트
     const handleVoteClick = () => {
         navigate('/votepage', { state: { participants, postId } });
-    }
+    };
 
     return (
         <div className="party">
@@ -184,6 +219,17 @@ const Party = () => {
                         <textarea className="party__edit-textarea" value={editContent} onChange={(e) => setEditContent(e.target.value)} placeholder="내용" />
                         <input className="party__edit-date" type="datetime-local" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
                         <input className="party__edit-tags" type="text" value={alterTags} onChange={(e) => setAlterTags(e.target.value)} placeholder="#변경할 해시태그(공백으로 구분)" />
+
+                        <div className="party__edit-images">
+                            {images.map(image => (
+                                <div key={image.image_id} className="party__edit-image-item">
+                                    <img src={`${process.env.PUBLIC_URL}/postImage/${image.url}`} alt={post.title} className="party__thumbnail" />
+                                    <button onClick={() => handleImageDelete(image.image_id)}>삭제</button>
+                                </div>
+                            ))}
+                            <input type="file" multiple onChange={handleNewImages} />
+                        </div>
+
                         <button className="party__edit-submit" onClick={handleEditPost}>수정 완료</button>
                         <button className="party__edit-cancel" onClick={() => setIsEditing(false)}>취소</button>
                     </div>

@@ -6,7 +6,6 @@ import cat from "../images/고양이.jpg";
 import api from "../api";
 
 
-
 // 검색창
 const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
     const navigate = useNavigate();
@@ -89,10 +88,9 @@ const Main = () => {
     const [posts, setPosts] = useState([]);
     const [allPosts, setAllPosts] = useState([]);
     const [hashtags, setHashtags] = useState([]);
-    const [images, setImages]=useState([]);
 
     // const [page, setPage] = useState(1);
-    const size=20; //set도 useState사용할것
+    const size=50; //set도 useState사용할것
 
     // const [totalPages, setTotalPages]=useState(1); // 전체 페이지수
 
@@ -104,7 +102,7 @@ const Main = () => {
             // 전체 게시물
             const allPostsResponse = await api.get(`/posts?page=${page}&size=${size}`, {withCredentials: true});
             const allPostResponses = allPostsResponse.data.no_login_posts_responses.content;
-            setImages(allPostResponses);
+
             // const totalPages=allPostResponses.data.no_login_posts_responses.total_pages;
 
             let PostResponses = [];
@@ -153,11 +151,11 @@ const Main = () => {
                 <div className="main__posts-container">
                     {isLogin && (
                         <div className="main__hashtags-posts">
-                            <Posts posts={posts} title="추천 게시물" />
+                            <Posts posts={posts} title="[ 추천 게시물 ]" />
                         </div>
                     )}
                     <div className="main__allposts">
-                        <Posts posts={allPosts} title="전체 게시물" />
+                        <Posts posts={allPosts} title="[ 전체 게시물 ]" />
                         <button onClick={handleNewPost} className="main__newpost-button">글 작성</button>
                     </div>
                 </div>

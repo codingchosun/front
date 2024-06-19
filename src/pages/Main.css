@@ -27,8 +27,8 @@
     padding: 10px;
     margin: 10px;
     width: 500px;
-    border: 1px solid black;
-    border-radius: 5px;
+    border: none;
+    border-radius: 8px;
     background: #FFFFFF;
 }
 
@@ -38,13 +38,13 @@
     padding: 10px;
     width: auto;
     height: 20px;
-    margin-top: 10px;
     border: 1px solid #1F1122;
 }
 
 .main__search-bar button {
     width: 20%;
     margin: auto;
+    padding: 10px;
     text-align: center;
     border: none;
     border-radius: 5px;
@@ -82,7 +82,11 @@
     display: flex;
     width: 100%;
     justify-content: space-between; /* Ensures both columns are spaced out */
-    gap: 20px; /* Adds some space between the two columns */
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #1F1122;
+    border-radius: 5px;
+    background-color: white;
 }
 
 .main__hashtags-posts,

@@ -25,7 +25,7 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/register',userData,{
+            const response = await api.post('/register',userData,{
                 headers: {
                     'Content-Type': 'application/json',
                 },

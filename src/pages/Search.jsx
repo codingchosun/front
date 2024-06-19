@@ -5,6 +5,26 @@ import "./Search.css";
 import cat from "../images/고양이.jpg";
 import api from "../api";
 
+// 검색창
+const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
+    const navigate = useNavigate();
+
+    const handleSearch = () => {
+        navigate('/search', { state: { searchTerm: searchMeeting } });
+    };
+    return (
+        <div className="main__search-bar">
+            <input
+                type="text"
+                value={searchMeeting}
+                onChange={(e) => setSearchMeeting(e.target.value)}
+                placeholder="검색어를 입력하세요"
+            />
+            <button onClick={handleSearch}>검색</button>
+        </div>
+    );
+};
+
 const cutContent = (content, maxLength) => {
     if (content.length <= maxLength) {
         return content;
@@ -23,6 +43,7 @@ const Search = () => {
     const [posts, setPosts] = useState([]);
     const [page] = useState(1);
     const [size] = useState(2);
+    const [searchMeeting, setSearchMeeting] = useState('');
 
     useEffect(() => {
         const fetchSearchResults = async () => {
@@ -35,7 +56,7 @@ const Search = () => {
                 });
 
                 const searchResults = response.data.content;
-
+                console.log(searchResults);
                 setPosts(searchResults);
             } catch (error) {
                 console.error('검색 결과 에러:', error);
@@ -51,33 +72,40 @@ const Search = () => {
         navigate('/party', { state: { postId } });
     };
 
-    if (!searchTerm) {
-        return <div className="search__empty">검색어를 입력하세요.</div>;
-    }
-
-    if (posts.length === 0) {
-        return <div className="search__empty">검색 결과가 없습니다.</div>;
-    }
-
     return (
         <div className="search">
-            <h1>검색 결과</h1>
-            <div className="search__posts">
-                {posts.map((post) => (
-                    <div key={post.id} className="search__post" onClick={() => handlePostClick(post.id)}>
-                        {post.path ? (
-                            <img src={`${post.path}`} alt="post" className="search__post-default" />
-                        ) : (
-                            <img src={cat} alt="default" className="search__post-default" />
-                        )}
-                        <div className="search__post-content">
-                            <div className="search__post-id">번호: {post.id}</div>
-                            <div className="search__post-title">제목: {cutContent(post.title, 20)}</div>
-                            <div className="search__post-content">내용: {cutContent(post.contents, 100)}</div>
-                        </div>
-                    </div>
-                ))}
+            <div>
+                <SearchBar
+                    searchMeeting={searchMeeting}
+                    setSearchMeeting={setSearchMeeting}
+                />
             </div>
+            <h1>검색 결과</h1>
+            {searchTerm ? (
+                posts.length > 0 ? (
+                    <div className="search__posts">
+                        {
+                            posts.map((post) => (
+                                <div key={post.id} className="search__post" onClick={() => handlePostClick(post.id)}>
+                                    {post.path ? (
+                                        <img src={`${process.env.PUBLIC_URL}/postImage/${post.path}`} alt={post.title} className="main__post-thumbnail"/>
+                                    ) : (
+                                        < img src={cat} alt="default" className="main__post-default"/>
+                                    )}
+                                    <div className="search__post-content">
+                                        <div className="search__post-id">번호: {post.id}</div>
+                                        <div className="search__post-title">제목: {cutContent(post.title, 8)}</div>
+                                        <div className="search__post-content">내용: {cutContent(post.contents, 30)}</div>
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                ) : (
+                    <div className="search__empty">검색 결과가 없습니다.</div>
+                )
+            ) : (
+                <div className="search__empty">검색어를 입력하세요.</div>
+            )}
         </div>
     );
 };

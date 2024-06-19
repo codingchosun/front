@@ -35,7 +35,7 @@ const VotePage = () => {
             fetchParticipants();
         }
 
-    });
+    }, [postId]);
 
     const handleRatingChange = (participantId, templateContent) => {
         setRatings(prevRatings => ({
@@ -72,15 +72,15 @@ const VotePage = () => {
             <h1>참가자 평가</h1>
             <ul className="participant-list">
                 {participants.map(participant => (
-                    <li key={participant.userId} className="participant-item">
+                    <li key={participant.user_id} className="participant-item">
                         <span>{participant.nickname}</span>
                         <select
                             value={ratings[participant.user_id] || ''}
                             onChange={(e) => handleRatingChange(participant.user_id, e.target.value)}
                         >
                             <option value="">평가 선택</option>
-                            {templates.map(template => (
-                                <option key={template.content} value={template.content}>
+                            {templates.map((template, index) => (
+                                <option key={index} value={template.content}>
                                     {template.content}
                                 </option>
                             ))}

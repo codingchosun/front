@@ -114,8 +114,8 @@ const MyPage = () => {
                 <div className="mannerFigure">
                     <div className="mannerFill" style={{ width: `${score}%` }}>
                         { score>=0 && score<=100 ? (
-                            <text>{score}</text>
-                        ) : ( <text>초과점수자</text>)
+                            <p>{score}</p>
+                        ) : ( <p>초과점수자</p>)
                         }
                     </div>
                 </div>

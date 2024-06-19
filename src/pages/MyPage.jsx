@@ -113,7 +113,7 @@ const MyPage = () => {
                 <h3>매너 점수</h3>
                 <div className="mannerFigure">
                     <div className="mannerFill" style={{ width: `${score}%` }}>
-                        {score+50}%
+                        {score}%
                     </div>
                 </div>
             </div>

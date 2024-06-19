@@ -113,7 +113,10 @@ const MyPage = () => {
                 <h3>매너 점수</h3>
                 <div className="mannerFigure">
                     <div className="mannerFill" style={{ width: `${score}%` }}>
-                        {score}%
+                        { score>=0 && score<=100 ? (
+                            <text>{score}</text>
+                        ) : ( <text>초과점수자</text>)
+                        }
                     </div>
                 </div>
             </div>

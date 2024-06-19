@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import "./NewPost.css";
+import "./NewPost.css"; // Ensure this path is correct
 import api from "../api";
 
 const NewPost = () => {
@@ -130,10 +129,10 @@ const NewPost = () => {
                     />
                 </div>
                 <div className="form-buttons">
-                    <button type="button" className="cancel-button" onClick={handleCancel}>취소</button>
                     <button type="submit" className="submit-button" disabled={isSubmit}>
                         {isSubmit ? "작성 중" : "작성"}
                     </button>
+                    <button type="button" className="cancel-button" onClick={handleCancel}>취소</button>
                 </div>
             </form>
         </div>

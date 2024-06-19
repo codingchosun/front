@@ -113,7 +113,7 @@ const MyPage = () => {
                 <h3>매너 점수</h3>
                 <div className="mannerFigure">
                     <div className="mannerFill" style={{ width: `${score}%` }}>
-                        {score}%
+                        {score+50}%
                     </div>
                 </div>
             </div>
@@ -150,10 +150,10 @@ const MyPage = () => {
 
             <div className="buttonContainer">
                 <Link to="/useredit">
-                    <button>수정페이지</button>
+                    <button>회원정보 수정</button>
                 </Link>
                 <Link to="/myparty">
-                    <button>모임 목록</button>
+                    <button>참여한 모임 목록</button>
                 </Link>
                 <button onClick={handleDeleteAccount}>회원탈퇴</button>
             </div>

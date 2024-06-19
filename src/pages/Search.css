@@ -6,6 +6,11 @@
     background-color: #F4F4F9;
 }
 
+.search__title {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
 .search__posts {
     display: flex;
     flex-direction: column;
@@ -22,7 +27,7 @@
     border-radius: 5px;
     background-color: white;
     color: black;
-    border: 1px solid;
+    border: 1px solid #ccc;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -31,13 +36,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.search__post-thumbnail,
 .search__post-default {
-    width: 30%;
-    max-width: 150px;
+    width: 150px;
     height: auto;
     border: none;
     border-radius: 5px;
-    margin: 10px;
+    margin-right: 20px;
 }
 
 .search__post-content {
@@ -45,11 +50,12 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
+    flex: 1;
 }
 
 .search__post-id,
 .search__post-title,
-.search__post-content {
+.search__post-contents {
     margin: 5px 0;
 }
 
@@ -57,4 +63,5 @@
     margin: 20px;
     color: gray;
     font-size: 1.2em;
+    text-align: center;
 }

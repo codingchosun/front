@@ -1,49 +1,176 @@
-.party-container {
+.party {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin: 20px;
+    padding: 20px;
 }
 
-.party-details {
+.party__details {
     width: 100%;
     max-width: 800px;
     margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #1F1122;
+    border-radius: 8px;
+    background-color: #ffffff;
 }
 
-.party-info {
+.party__info {
+    margin-top: 10px;
+    padding: 20px;
+}
+
+.party__content {
+    padding: 20px;
+    border: 1px solid #1F1122;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.party__thumbnail {
+    width: 300px;
+    height: 300px;
+    border: none;
+    background-color: #ffffff;
+}
+
+.party__participants {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #1F1122;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.party__participants-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.party__participants-list {
+    list-style: none;
+    padding: 0;
+}
+
+.party__participant {
+    cursor: pointer;
+    padding: 5px 0;
+    border-bottom: 1px solid #1F1122;
+    background-color: #ffffff;
+}
+
+.party__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-top: 10px;
 }
 
-.party-thumbnail {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
+.party__join-button,
+.party__leave-button,
+.party__manage-button,
+.party__vote-button,
+.party__edit-button,
+.party__edit-submit,
+.party__edit-cancel,
+.party__comment-submit {
+    width: 100px;
+    height: 40px;
+    white-space: nowrap;
+    font-size: 14px;
+    margin: 5px;
+    flex: 1 1 auto;
+    text-align: center;
+    background-color: #1F1122;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.2s;
 }
 
-.party-participants {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 20px;
-}
-
-.party-comments {
+.party__comments {
     width: 100%;
     max-width: 800px;
 }
 
-.comment-input {
-    display: flex;
-    flex-direction: column;
+.party__comments-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
-.comment-input textarea {
+.party__comments-list {
+    list-style: none;
+    padding: 0;
+    border: 1px solid #1F1122;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.party__comment {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.party__comment-user {
+    font-weight: bold;
+}
+
+.party__comment-date {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.party__comment-input {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.party__comment-input-actions {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 10px; /* 버튼 사이 간격 */
+    margin-top: 10px;
+}
+
+.party__comment-textarea {
     width: 100%;
     height: 80px;
     margin-top: 10px;
 }
 
-.comment-input button {
-    align-self: flex-end;
-    margin-top: 10px;
+.party__edit-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.party__edit-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.party__edit-input,
+.party__edit-textarea,
+.party__edit-date,
+.party__edit-tags {
+    width: 70%;
+    margin-bottom: 10px;
+    padding: 10px 10px;
+    border: 1px solid #1F1122;
+    border-radius: 4px;
+}
+
+.party__title {
+    font-size: 2em;
+    margin-bottom: 10px;
+    padding: 20px;
+    border: 1px solid #1F1122;
+    border-radius: 5px;
+    background-color: #ffffff;
 }

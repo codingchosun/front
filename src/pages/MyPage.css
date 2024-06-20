@@ -1,53 +1,88 @@
-.manage-container {
-    width: 60%;
+/* MyPage.css */
+
+.mypageContainer {
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.manage-container h1 {
+.mypageContainer h1 {
     text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.introductionContainer, .emailContainer, .hashtagContainer, .templateContainer {
     margin-bottom: 20px;
 }
 
-.participant-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.participant-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.participant-item label {
-    font-size: 16px;
+label {
+    font-size: 1.2em;
     font-weight: 500;
-    display: flex;
-    align-items: center;
+    margin-bottom: 10px;
+    display: block;
+    color: #555;
 }
 
-.participant-item input {
-    margin-right: 10px;
+.introductionInput input, .emailInput input, .hashtagInput input, .templateInput input {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1em;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* Ensures inputs are inline elements */
+}
+
+.introductionInput input[readonly], .emailInput input[readonly], .hashtagInput input[readonly], .templateInput input[readonly] {
+    background-color: #f9f9f9;
+}
+
+.mannerScore {
+    margin-bottom: 30px;
+}
+
+.mannerScore h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.buttonContainer button, .buttonContainer a button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    color: white;
+    background-color: cornflowerblue;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.buttonContainer button:hover, .buttonContainer a button:hover {
+    background-color: #d9534f;
 }
 
 .remove-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #FF6347;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
+    background-color: #ff6347; /* Red for remove button */
 }
 
 .remove-button:hover {
-    background-color: #FF4500;
+    background-color: #ff4500; /* Darker red on hover */
 }

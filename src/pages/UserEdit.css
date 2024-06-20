@@ -1,57 +1,79 @@
+/* UserEdit.css */
+
 .userEditContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    width: 100%;
-    max-width: 600px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    margin: 10px auto;
+    align-items: normal;
 }
 
 .userEditContainer h1 {
-    margin-top: 20px;
-    font-size: 24px;
-}
-
-.changePassword, .changeNickname {
-    width:100%;
-    max-width: 500px;
-    margin-bottom: 20px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-}
-
-.changePassword label, .changeNickname label {
-    margin-bottom: 5px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 2.5em;
     font-weight: bold;
 }
 
-.currentPassword input, .newPassword input {
-    font-size: 12px;
-    padding: 10px;
+.formGroup {
     width: 100%;
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: block;
+    color: #555;
+}
+
+.formGroup input, .formGroup select, .formGroup textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1em;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
 
-.userEditContainer button {
-    padding: 10px 10px;
-    font-size: 12px;
+.formGroup textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    width: 100%;
+    align-items: flex-end; /* 오른쪽 정렬 */
+}
+
+.buttonContainer button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
     cursor: pointer;
+    color: white;
+    background-color: cornflowerblue;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
 }
 
-.nickname label {
-    margin-right: 10px;
-}
-
-.nickname input {
-    padding: 10px;
-    width: 100%;
-    font-size: 12px;
-    margin-right: 10px;
-    box-sizing: border-box;
+.buttonContainer button:hover {
+    background-color: #d9534f;
 }
 
 button[disabled] {

@@ -110,7 +110,7 @@ const MyPage = () => {
                 <div className="mypage__score-figure">
                     <div className="mypage__score-fill" style={{transform: `rotate(${(score / 100) * 360}deg)`}}></div>
                     {score > 50 && <div className="mypage__score-mask"></div>}
-                    <p>{score >= 0 && score <= 100 ? score : '초과점수자'}</p>
+                    <p>{score >= 0 && score <= 100 ? score : score}</p>
                 </div>
             </div>
 

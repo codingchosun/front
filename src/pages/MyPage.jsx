@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAuth } from "./AuthContext";
 import "./MyPage.css";
 import api from "../api";
-import { useAuth } from "./AuthContext";
 
 const MyPage = () => {
-    const { isLogin, logout } = useAuth();
+    const {isLogin, logout} = useAuth();
+
     const navigate = useNavigate();
+
     const [userId, setUserId] = useState(null);
-    const [loginId, setLoginId]=useState(null);
+    const [loginId, setLoginId] = useState(null);
     const [nickname, setNickname] = useState('');
     const [introduction, setIntroduction] = useState('');
     const [email, setEmail] = useState('');
@@ -25,8 +26,6 @@ const MyPage = () => {
                 });
                 setUserId(response.data.user_id);
                 setLoginId(response.data.login_id);
-                console.log("userId: ", userId);
-                console.log("loginId: ", loginId);
             } catch (error) {
                 console.error("사용자 확인 오류:", error);
                 navigate('/login');
@@ -36,14 +35,12 @@ const MyPage = () => {
         if (isLogin) {
             fetchUserId();
         }
-    }, [isLogin, navigate,loginId,userId]);
-
-
+    }, [isLogin, navigate, loginId, userId]);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await api.get(`/profile/${loginId}`, { withCredentials: true });
+                const response = await api.get(`/profile/${loginId}`, {withCredentials: true});
                 const data = response.data;
                 setNickname(data.nickname);
                 setIntroduction(data.introduction);
@@ -63,11 +60,10 @@ const MyPage = () => {
 
     const handleDeleteAccount = async () => {
         try {
-            const response = await api.get(`/deleteAccount`, { withCredentials: true });
+            const response = await api.get(`/deleteAccount`, {withCredentials: true});
             const data = response.data;
             if (data.success) {
                 alert('회원탈퇴가 완료되었습니다');
-                console.log(data.body);
                 logout();
                 navigate('/main');
             } else {
@@ -79,51 +75,49 @@ const MyPage = () => {
         }
     };
 
-
-
     return (
-        <div className="mypageContainer">
+        <div className="mypage">
             <h1>{nickname} 님의 마이페이지 입니다</h1>
 
-            <div className="introductionContainer">
-                <label>자기소개</label>
-                <div className="introductionInput">
+            <div className="mypage__section mypage__section--introduction">
+                <label className="mypage__label">자기소개</label>
+                <div className="mypage__input-wrapper">
                     <input
                         type="text"
                         value={introduction}
                         readOnly
                         placeholder="자기소개를 한줄로 작성하세요"
+                        className="mypage__input"
                     />
                 </div>
             </div>
 
-            <div className="emailContainer">
-                <label>이메일</label>
-                <div className="emailInput">
+            <div className="mypage__section mypage__section--email">
+                <label className="mypage__label">이메일</label>
+                <div className="mypage__input-wrapper">
                     <input
                         type="text"
                         value={email}
                         readOnly
                         placeholder="이메일"
+                        className="mypage__input"
                     />
                 </div>
             </div>
 
-            <div className="mannerScore">
+            <div className="mypage__section mypage__section--score">
                 <h3>매너 점수</h3>
-                <div className="mannerFigure">
-                    <div className="mannerFill" style={{ width: `${score}%` }}>
-                        { score>=0 && score<=100 ? (
-                            <p>{score}</p>
-                        ) : ( <p>초과점수자</p>)
-                        }
-                    </div>
+                <div className="mypage__score-figure">
+                    <div className="mypage__score-fill" style={{transform: `rotate(${(score / 100) * 360}deg)`}}></div>
+                    {score > 50 && <div className="mypage__score-mask"></div>}
+                    <p>{score >= 0 && score <= 100 ? score : '초과점수자'}</p>
                 </div>
             </div>
 
-            <div className="hashtagContainer">
-                <label>해쉬 태그</label>
-                <div className="hashtagInput">
+
+            <div className="mypage__section mypage__section--hashtags">
+                <label className="mypage__label">해쉬 태그</label>
+                <div className="mypage__input-wrapper-hashtags">
                     {hashtags.map((tag, index) => (
                         <input
                             key={index}
@@ -131,14 +125,15 @@ const MyPage = () => {
                             value={tag}
                             readOnly
                             placeholder="해쉬태그를 입력하세요"
+                            className="mypage__input"
                         />
                     ))}
                 </div>
             </div>
 
-            <div className="templateContainer">
-                <label>템플릿</label>
-                <div className="templateInput">
+            <div className="mypage__section mypage__section--templates">
+                <label className="mypage__label">템플릿</label>
+                <div className="mypage__input-wrapper">
                     {templates.map((template, index) => (
                         <input
                             key={index}
@@ -146,19 +141,20 @@ const MyPage = () => {
                             value={template}
                             readOnly
                             placeholder="템플릿을 입력하세요"
+                            className="mypage__input"
                         />
                     ))}
                 </div>
             </div>
 
-            <div className="buttonContainer">
-                <Link to="/useredit">
-                    <button>회원정보 수정</button>
+            <div className="mypage__button-container">
+                <Link to="/useredit" className="mypage__button-link">
+                    <button className="mypage__button">회원정보 수정</button>
                 </Link>
-                <Link to="/myparty">
-                    <button>참여한 모임 목록</button>
+                <Link to="/myparty" className="mypage__button-link">
+                    <button className="mypage__button">참여한 모임 목록</button>
                 </Link>
-                <button onClick={handleDeleteAccount}>회원탈퇴</button>
+                <button onClick={handleDeleteAccount} className="mypage__button">회원탈퇴</button>
             </div>
         </div>
     );

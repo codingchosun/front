@@ -1,86 +1,145 @@
-.mypageContainer {
-    max-width: 1000px;
+.mypage {
+    max-width: 800px;
     margin: 0 auto;
-    padding: 40px;
+    padding: 20px;
     font-family: 'Arial', sans-serif;
-    background-color: #f1f1f1;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.mypageContainer h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333;
-    font-size: 2.5em;
-    font-weight: bold;
-}
-
-.introductionContainer, .emailContainer, .hashtagContainer, .templateContainer {
-    margin-bottom: 20px;
-}
-
-label {
-    font-size: 1.2em;
-    font-weight: 500;
-    margin-bottom: 10px;
-    display: block;
-    color: #555;
-}
-
-.introductionInput input, .emailInput input, .hashtagInput input, .templateInput input {
-    padding: 15px;
-    border: 1px solid #ccc;
+    background-color: #FFFFFF;
+    border: 4px solid #374999;
     border-radius: 10px;
-    font-size: 1em;
-    background-color: #fff;
-    color: #333;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: inline-block; /* Ensures inputs are inline elements */
 }
 
-.introductionInput input[readonly], .emailInput input[readonly], .hashtagInput input[readonly], .templateInput input[readonly] {
-    background-color: #f9f9f9;
-}
-
-.mannerScore {
-    margin-bottom: 30px;
-}
-
-.mannerScore h3 {
-    font-size: 1.5em;
+.mypage h1 {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 35px;
     font-weight: bold;
-    color: #333;
+    color: #000000;
+    background-color: white;
+    border-bottom: 5px double #000000;
+}
+
+.mypage__section {
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 1px solid #000000;
+    border-radius: 8px;
+}
+
+.mypage__label {
+    display: block;
+    padding: 5px;
     margin-bottom: 10px;
+    width: 70px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: #000000;
+    background-color: white;
+    border: 4px solid #374999;
+    border-radius: 8px;
 }
 
-.buttonContainer {
+.mypage__input-wrapper input {
+    display: inline-block;
+    width:300px;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #000000;
+    background-color: #FFFFFF;
+}
+
+.mypage__input-wrapper-hashtags input{
+    display: inline-block;
+    width:80px;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #000000;
+}
+.mypage__input-wrapper-hashtags{
+    background-color: #FFFFFF;
+}
+
+.mypage__section--score h3 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    padding: 10px;
+    margin-bottom: 30px;
+    border: 5px solid #374999;
+    border-radius: 8px;
+    width: 70px;
+}
+
+.mypage__button-container {
     display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
+    justify-content: flex-start;
+    margin: auto;
+    padding: 10px;
 }
 
-.buttonContainer button, .buttonContainer a button {
+.mypage__button-container .mypage__button,
+.mypage__button-container .mypage__button-link .mypage__button {
     padding: 10px 15px;
     border: none;
     border-radius: 8px;
     font-size: 1em;
     cursor: pointer;
     color: white;
-    background-color: cornflowerblue;
+    background-color: #1F1122;
     transition: background-color 0.3s;
     text-align: center;
     text-decoration: none;
+    white-space: nowrap;
+    margin: 10px;
 }
 
-.buttonContainer button:hover, .buttonContainer a button:hover {
-    background-color: #d9534f;
+.mypage__button-container .mypage__button:hover,
+.mypage__button-container .mypage__button-link .mypage__button:hover {
+    background-color: #1a1a8d;
 }
 
-.remove-button {
-    background-color: #ff6347;
+.mypage__score-figure {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #dcdada;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.remove-button:hover {
-    background-color: #ff4500;
+.mypage__score-fill {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    clip: rect(0px, 100px, 100px, 50px);
+    background: #fff900;
+    transform: rotate(0deg);
+}
+
+.mypage__score-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    clip: rect(0px, 50px, 100px, 0px);
+    background: #fff900;
+    transform: rotate(0deg);
+}
+
+.mypage__score-figure p {
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
 }

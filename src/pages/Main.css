@@ -12,11 +12,11 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 1000px; /* Increased max-width to accommodate two columns */
-    background-color: #F6F4F1;
+    max-width: 1000px;
+    background-color: #FFFFFF;
     padding: 20px;
-    border: 1px solid;
-    border-radius: 5px;
+    border: 4px solid #374999;
+    border-radius: 10px;
     box-sizing: border-box;
 }
 
@@ -28,8 +28,8 @@
     margin: 10px;
     width: 500px;
     border: none;
-    border-radius: 8px;
-    background: #FFFFFF;
+    border-radius: 10px;
+    background: #374999;
 }
 
 .main__search-bar input {
@@ -38,7 +38,8 @@
     padding: 10px;
     width: auto;
     height: 20px;
-    border: 1px solid #1F1122;
+    border: none;
+    border-radius: 8px;
 }
 
 .main__search-bar button {
@@ -68,7 +69,7 @@
     background-color: white;
     padding: 10px;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 .main__hashtag-item {
@@ -81,24 +82,25 @@
 .main__posts-container {
     display: flex;
     width: 100%;
-    justify-content: space-between; /* Ensures both columns are spaced out */
+    justify-content: space-between;
     gap: 20px;
     padding: 20px;
-    border: 1px solid #1F1122;
-    border-radius: 5px;
+    border-top: 4px double #374999;
     background-color: white;
 }
 
 .main__hashtags-posts,
 .main__allposts {
-    flex: 1; /* Ensures both columns take equal space */
-    max-width: 48%; /* Ensures columns do not exceed 48% of the container width */
+    flex: 1;
+    max-width: 48%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
+    padding:5px;
+    border: 4px solid #374999;
+    border-radius: 10px;
 }
 
-/* 게시물 전체 */
 .main__posts {
     display: flex;
     flex-direction: column;
@@ -108,26 +110,24 @@
     overflow-y: auto;
     width: 100%;
     gap: 10px;
-    border: 1px solid;
-    border-radius: 5px;
+    border: none;
 }
 
 .main__posts-title {
     margin-bottom: 10px;
-    font-size: 1.5em;
+    font-size: 24px;
     text-align: center;
 }
 
-/* 각각 게시물 */
 .main__post {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     padding: 10px;
-    border-radius: 5px;
+    border: 1px solid;
+    border-radius: 8px;
     background-color: white;
     color: black;
-    border: 1px solid;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 

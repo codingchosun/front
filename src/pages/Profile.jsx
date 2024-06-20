@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./MyPage.css";
+import "./Profile.css";
 import api from "../api";
 import { useAuth } from "./AuthContext";
 
 const Profile = () => {
     const { isLogin } = useAuth();
     const navigate = useNavigate();
-    const location=useLocation();
+    const location = useLocation();
 
     const [userId, setUserId] = useState(null);
-    const [loginId, setLoginId]=useState(null);
-    const participant=location.state ? location.state.participantId : null;
-
+    const [loginId, setLoginId] = useState(null);
+    const participant = location.state ? location.state.participantId : null;
 
     const [nickname, setNickname] = useState('');
     const [introduction, setIntroduction] = useState('');
@@ -41,9 +40,7 @@ const Profile = () => {
         if (isLogin) {
             fetchUserId();
         }
-    }, [isLogin, navigate,loginId,userId]);
-
-
+    }, [isLogin, navigate, loginId, userId]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -66,49 +63,48 @@ const Profile = () => {
         }
     }, [userId]);
 
-
-
-
     return (
-        <div className="mypageContainer">
+        <div className="profile-container">
             <h1>{nickname} 님의 프로필 페이지 입니다</h1>
 
-            <div className="introductionContainer">
-                <label>자기소개</label>
-                <div className="introductionInput">
+            <div className="profile-section profile-introduction">
+                <label className="profile-label">자기소개</label>
+                <div className="profile-input-wrapper">
                     <input
                         type="text"
                         value={introduction}
                         readOnly
                         placeholder="자기소개를 한줄로 작성하세요"
+                        className="profile-input"
                     />
                 </div>
             </div>
 
-            <div className="emailContainer">
-                <label>이메일</label>
-                <div className="emailInput">
+            <div className="profile-section profile-email">
+                <label className="profile-label">이메일</label>
+                <div className="profile-input-wrapper">
                     <input
                         type="text"
                         value={email}
                         readOnly
                         placeholder="이메일"
+                        className="profile-input"
                     />
                 </div>
             </div>
 
-            <div className="mannerScore">
+            <div className="profile-section profile-score">
                 <h3>매너 점수</h3>
-                <div className="mannerFigure">
-                    <div className="mannerFill" style={{ width: `${score}%` }}>
-                        {score}%
-                    </div>
+                <div className="mypage__score-figure">
+                    <div className="mypage__score-fill" style={{transform: `rotate(${(score / 100) * 360}deg)`}}></div>
+                    {score > 50 && <div className="mypage__score-mask"></div>}
+                    <p>{score >= 0 && score <= 100 ? score : score}</p>
                 </div>
             </div>
 
-            <div className="hashtagContainer">
-                <label>해쉬 태그</label>
-                <div className="hashtagInput">
+            <div className="profile-section profile-hashtags">
+                <label className="profile-label">해쉬 태그</label>
+                <div className="profile-input-wrapper-hashtags">
                     {hashtags.map((tag, index) => (
                         <input
                             key={index}
@@ -116,14 +112,15 @@ const Profile = () => {
                             value={tag}
                             readOnly
                             placeholder="해쉬태그를 입력하세요"
+                            className="profile-input"
                         />
                     ))}
                 </div>
             </div>
 
-            <div className="templateContainer">
-                <label>템플릿</label>
-                <div className="templateInput">
+            <div className="profile-section profile-templates">
+                <label className="profile-label">템플릿</label>
+                <div className="profile-input-wrapper">
                     {templates.map((template, index) => (
                         <input
                             key={index}
@@ -131,11 +128,11 @@ const Profile = () => {
                             value={template}
                             readOnly
                             placeholder="템플릿을 입력하세요"
+                            className="profile-input"
                         />
                     ))}
                 </div>
             </div>
-
         </div>
     );
 };

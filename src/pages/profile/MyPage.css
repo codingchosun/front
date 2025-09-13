@@ -1,0 +1,67 @@
+.mypage-container {
+    background-color: white;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mypage-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.mypage-info {
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-value {
+    color: #333;
+}
+
+.mypage-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.logout-button, .delete-button {
+    background-color: #6c757d;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+
+.logout-button:hover {
+    background-color: #5a6268;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+.mypage-loading, .mypage-error {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #888;
+}

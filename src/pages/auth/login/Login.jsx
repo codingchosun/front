@@ -1,12 +1,9 @@
-// 로그인 페이지
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {useAuth} from "../../../contexts/AuthContext";
-
 import Input from "../../../components/common/Input";
 import Button from "../../../components/common/Button";
-
+import axios from "axios";
 import "./Login.css";
 
 const Login = () => {
@@ -31,17 +28,17 @@ const Login = () => {
                 }
             });
 
-            //로그인 성공
+            //로그인이 성공할 경우
             if (response.status === 200) {
                 console.log("RESPONSE:", response);
-                sessionStorage.setItem('succeed', 'ok');
-                login();
+                //TODO: 백엔드에 로그인된 사용자 확인 API 요청 -> response.data 예시 { loginId: '로그인아이디', nickname: '닉네임'}
+                login(response.data);
 
-                console.log("로그인 성공");
+                alert("로그인 성공!!");
                 navigate("/main");
             }
         } catch (error) {
-            alert("로그인 실패");
+            alert("로그인이 실패하였습니다");
             console.error("로그인 오류:", error);
         }
     };

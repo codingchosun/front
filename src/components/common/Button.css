@@ -1,0 +1,19 @@
+.button, .button-link {
+    padding: 12px;
+    font-size: 14px;
+    color: white;
+    background-color: #1F1122;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    flex: 1;
+    margin: 0 5px;
+}
+
+.button:hover, .button-link:hover {
+    background-color: #374051;
+}

@@ -1,5 +1,5 @@
-// 사용자 입력용 컴포넌트
 import React from 'react';
+import "./Input.css"
 
 const Input = ({label, id, value, onChange, type = 'text', required = false}) => {
     return (

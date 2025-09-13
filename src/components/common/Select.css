@@ -1,0 +1,23 @@
+.form-group select {
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background-color: white;
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #1F1122;
+    box-shadow: 0 0 0 2px rgba(31, 17, 34, 0.2);
+}

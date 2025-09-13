@@ -5,6 +5,15 @@ body {
     padding: 0;
 }
 
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
 .register-form {
     background-color: white;
     max-width: 500px;
@@ -26,16 +35,11 @@ body {
 
 .register-form__input,
 .register-form__select {
-    width: calc(100% - 150px);
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-.register-form__input[type="date"],
-.register-form__select {
-    width: 20%;
+    box-sizing: border-box;
 }
 
 .register-form__input:focus,
@@ -72,4 +76,22 @@ body {
 
 .register-form__button--cancel:hover {
     background-color: #495057;
+}
+
+.email-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.email-at {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.email-domain-select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
 }

@@ -1,0 +1,60 @@
+.profile-container {
+    background-color: white;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-section {
+    margin-bottom: 25px;
+}
+
+.profile-label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.hashtags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hashtag {
+    background-color: #e7f5ff;
+    color: #1c7ed6;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.no-hashtags {
+    color: #888;
+    font-style: italic;
+}
+
+.back-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.profile-message {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #888;
+}
+
+.profile-message.error {
+    color: #dc3545;
+}

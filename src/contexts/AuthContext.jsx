@@ -1,48 +1,65 @@
 import React, {createContext, useContext, useEffect, useState} from 'react';
-import { checkUserStatus } from '../api/api';
+import api from '../api/api';
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null); //유저 state
-    const [loading, setLoading] = useState(true); // 로딩 state
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const updateUser = async (loginId) => {
+        if (!loginId) {
+            setUser(null);
+            return;
+        }
+
+        try {
+            const profileResponse = await api.get(`/profile/${loginId}`);
+
+            if (profileResponse.status === 200 && profileResponse.data.success) {
+                setUser(profileResponse.data.body);
+            }
+        } catch (error) {
+            console.error("로그인 확인 실패: ", error);
+            setUser(null);
+        }
+    };
 
     useEffect(() => {
-        // 로그인 상태 체크
         const fetchUserStatus = async () => {
             try {
-                const response = await checkUserStatus();
-
-                if (response.status === 200 && response.data) {
-                    setUser(response.data);
+                const loginCheckResponse = await api.get('/me');
+                if (loginCheckResponse.status === 200 && loginCheckResponse.data.success) {
+                    const { loginId } = loginCheckResponse.data.body;
+                    await updateUser(loginId);
                 }
             } catch (error) {
-                console.error("로그인 상태 확인 실패:", error);
+                console.log("로그인 상태가 아닙니다.");
                 setUser(null);
             } finally {
-                setLoading(false); //로그인 상태 체크 종료시 로딩 상태 변경
+                setLoading(false);
             }
         };
 
         fetchUserStatus();
     }, []);
 
-    const login = (userData) => {
-        setUser(userData);
-    };
-
-
     const logout = async () => {
-        //TODO: 로그아웃 API 호출 필요 예) await axios.post('/logout');
-        setUser(null);
+        try {
+            await api.post('/logout');
+            setUser(null);
+        } catch (error) {
+            console.error("로그아웃 실패: ", error);
+            setUser(null);
+        }
     };
 
     const value = {
         user,
         isLoggedIn: !!user,
-        login,
+        updateUser,
         logout
     };
 

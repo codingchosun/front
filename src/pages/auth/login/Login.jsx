@@ -3,42 +3,35 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../../contexts/AuthContext";
 import Input from "../../../components/common/Input";
 import Button from "../../../components/common/Button";
-import axios from "axios";
+import api from "../../../api/api";
 import "./Login.css";
 
 const Login = () => {
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const {login} = useAuth();
+    const { updateUser } = useAuth();
 
-    //로그인 통신
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('loginId', loginId);
-        formData.append('password', password);
+        const loginRequest = {
+            loginId: loginId,
+            password: password
+        };
 
         try {
-            const response = await axios.post("/login", formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const loginResponse = await api.post("/login", loginRequest);
 
-            //로그인이 성공할 경우
-            if (response.status === 200) {
-                console.log("RESPONSE:", response);
-                //TODO: 백엔드에 로그인된 사용자 확인 API 요청 -> response.data 예시 { loginId: '로그인아이디', nickname: '닉네임'}
-                login(response.data);
+            if (loginResponse.status === 200 && loginResponse.data.success) {
+                console.log("loginResponse:", loginResponse);
+                await updateUser(loginId);
 
-                alert("로그인 성공!!");
+                alert(loginResponse.data.body.nickname + "님 환영합니다.");
                 navigate("/main");
             }
         } catch (error) {
-            alert("로그인이 실패하였습니다");
+            alert("로그인 처리에 문제가 발생하였습니다");
             console.error("로그인 오류:", error);
         }
     };

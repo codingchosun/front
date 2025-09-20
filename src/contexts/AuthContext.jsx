@@ -12,7 +12,8 @@ export const AuthProvider = ({children}) => {
     const updateUser = async (loginId) => {
         if (!loginId) {
             setUser(null);
-            return;
+
+            return null;
         }
 
         try {
@@ -20,6 +21,8 @@ export const AuthProvider = ({children}) => {
 
             if (profileResponse.status === 200 && profileResponse.data.success) {
                 setUser(profileResponse.data.body);
+
+                return profileResponse.data.body;
             }
         } catch (error) {
             console.error("로그인 확인 실패: ", error);

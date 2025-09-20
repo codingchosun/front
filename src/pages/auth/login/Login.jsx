@@ -24,10 +24,17 @@ const Login = () => {
             const loginResponse = await api.post("/login", loginRequest);
 
             if (loginResponse.status === 200 && loginResponse.data.success) {
+                const userProfile = await updateUser(loginId);
+
                 console.log("loginResponse:", loginResponse);
                 await updateUser(loginId);
 
-                alert(loginResponse.data.body.nickname + "님 환영합니다.");
+                if (userProfile && userProfile.nickname) {
+                    alert(userProfile.nickname + "님 환영합니다.");
+                } else {
+                    alert("로그인 성공! 환영합니다.");
+                }
+
                 navigate("/main");
             }
         } catch (error) {

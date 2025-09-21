@@ -17,7 +17,7 @@ export const AuthProvider = ({children}) => {
         }
 
         try {
-            const profileResponse = await api.get(`/profile/${loginId}`);
+            const profileResponse = await api.get(`/api/profile/${loginId}`);
 
             if (profileResponse.status === 200 && profileResponse.data.success) {
                 setUser(profileResponse.data.body);
@@ -33,9 +33,9 @@ export const AuthProvider = ({children}) => {
     useEffect(() => {
         const fetchUserStatus = async () => {
             try {
-                const loginCheckResponse = await api.get('/me');
+                const loginCheckResponse = await api.get('/api/me');
                 if (loginCheckResponse.status === 200 && loginCheckResponse.data.success) {
-                    const { loginId } = loginCheckResponse.data.body;
+                    const {loginId} = loginCheckResponse.data.body;
                     await updateUser(loginId);
                 }
             } catch (error) {
@@ -51,7 +51,7 @@ export const AuthProvider = ({children}) => {
 
     const logout = async () => {
         try {
-            await api.post('/logout');
+            await api.post('/api/logout');
             setUser(null);
         } catch (error) {
             console.error("로그아웃 실패: ", error);

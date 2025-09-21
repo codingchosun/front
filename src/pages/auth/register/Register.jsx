@@ -49,7 +49,7 @@ const Register = () => {
         };
 
         try {
-            const response = await axios.post('/register', registerUserRequest);
+            const response = await axios.post('/api/register', registerUserRequest);
 
             if (response.status === 201) {
                 console.log("회원 가입 성공: ", response.data);

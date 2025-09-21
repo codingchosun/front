@@ -21,12 +21,12 @@ const Login = () => {
         };
 
         try {
-            const loginResponse = await api.post("/login", loginRequest);
+            const loginResponse = await api.post("/api/login", loginRequest);
 
             if (loginResponse.status === 200 && loginResponse.data.success) {
                 const userProfile = await updateUser(loginId);
 
-                console.log("loginResponse:", loginResponse);
+                console.log("로그인 응답:", loginResponse);
                 await updateUser(loginId);
 
                 if (userProfile && userProfile.nickname) {
@@ -35,7 +35,7 @@ const Login = () => {
                     alert("로그인 성공! 환영합니다.");
                 }
 
-                navigate("/mypage");
+                navigate("/my-information");
             }
         } catch (error) {
             alert("로그인 처리에 문제가 발생하였습니다");

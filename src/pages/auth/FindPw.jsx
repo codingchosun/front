@@ -2,32 +2,30 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
-import axios from "axios";
+import api from "../../api/api";
 import "./FindPw.css";
 
 const FindPw = () => {
     const [loginId, setLoginId] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [isSuccess, setIsSuccess] = useState(false);
 
     const navigate = useNavigate();
 
     const handleFindPw = async (e) => {
         e.preventDefault();
-        setIsSuccess(false);
+
+        const findPasswordRequest = {
+            name: name,
+            loginId: loginId,
+            email: email
+        }
 
         try {
-            const response = await axios.post('/findpassword', {
-                name,
-                email,
-                loginId
-            });
+            const response = await api.post('/api/users/password', findPasswordRequest)
 
-            if (response.status === 200) {
-                console.log("비밀번호 찾기 성공: ", response.data);
-                setIsSuccess(true);
-                alert('가입하신 이메일로 임시 비밀번호를 발송했습니다.');
+            if (response.status === 200 && response.data.success) {
+                console.log("비밀번호 찾기 응답: ", response);
             }
         } catch (error) {
             console.error("비밀번호 찾기 실패:", error);
@@ -79,14 +77,6 @@ const FindPw = () => {
                     </Button>
                 </div>
             </form>
-
-            <div className="find-pw__result">
-                {isSuccess && (
-                    <p className="success-message">
-                        이메일로 발송된 임시 비밀번호를 확인하여 로그인해주세요.
-                    </p>
-                )}
-            </div>
         </div>
     );
 };

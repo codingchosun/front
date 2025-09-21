@@ -35,7 +35,7 @@ const Login = () => {
                     alert("로그인 성공! 환영합니다.");
                 }
 
-                navigate("/main");
+                navigate("/mypage");
             }
         } catch (error) {
             alert("로그인 처리에 문제가 발생하였습니다");

@@ -17,7 +17,7 @@ import UserEdit from "./pages/profile/UserEdit";
 import Party from "./pages/party/Party";
 import Manage from "./pages/party/Manage";
 import Search from "./pages/party/Search";
-import Header from "./components/layout/Header";
+import GlobalNavigationBar from "./components/common/GlobalNavigationBar";
 
 import api from "./api/api";
 
@@ -27,7 +27,7 @@ axios.defaults.withCredentials = true;
 function App() {
     return (
         <AuthProvider>
-            <Header/>
+            <GlobalNavigationBar/>
                 <Routes>
                     <Route path="/" element={<Main/>}/> {/*디폴트 페이지*/}
                     <Route path="/main" element={<Main/>}/> {/*메인 페이지*/}

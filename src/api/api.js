@@ -21,9 +21,4 @@ const api = axios.create({
 //     },
 // });
 
-// 로그인 확인 백엔드 API 호출
-export const checkUserStatus = () => {
-    return axios.get('/api/me');
-};
-
 export default api;

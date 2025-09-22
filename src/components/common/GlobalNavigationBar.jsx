@@ -27,6 +27,7 @@ const GlobalNavigationBar = () => {
                     <div className="gnb-user-menu">
                         <span className="gnb-welcome-message">{user?.nickname}님 환영합니다!</span>
                         <Link to="/my-information" className="gnb-button">내 정보</Link>
+                        <Link to={`/profile/${user?.loginId}`} className="gnb-button">프로필</Link>
                         <button onClick={handleLogout} className="gnb-button">로그아웃</button>
                     </div>
                 ) : (

@@ -9,14 +9,14 @@ import Main from "./pages/main/Main";
 import FindId from "./pages/auth/FindId";
 import FindPw from "./pages/auth/FindPw";
 import MyInformation from "./pages/profile/MyInformation";
-import MyParty from "./pages/party/MyParty";
-import NewPost from "./pages/party/NewPost";
+import MyParty from "./pages/post/MyParty";
+import PostRegistration from "./pages/post/PostRegistration";
 import Profile from "./pages/profile/Profile";
-import VotePage from "./pages/party/VotePage";
+import VotePage from "./pages/post/VotePage";
 import UserEdit from "./pages/profile/UserEdit";
-import Party from "./pages/party/Party";
-import Manage from "./pages/party/Manage";
-import Search from "./pages/party/Search";
+import PostDetail from "./pages/post/PostDetail";
+import Manage from "./pages/post/Manage";
+import Search from "./pages/post/Search";
 import GlobalNavigationBar from "./components/common/GlobalNavigationBar";
 
 import api from "./api/api";
@@ -33,13 +33,13 @@ function App() {
                 <Route path="/main" element={<Main/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
-                <Route path="/findid" element={<FindId/>}/> {/*아이디찾기 페이지*/}
-                <Route path="/findpw" element={<FindPw/>}/> {/*비밀번호찾기 페이지*/}
-                <Route path="/profile/:loginId" element={<Profile/>}/> {/*프로필 페이지*/}
-                <Route path="/my-information" element={<MyInformation/>}/> {/*마이 페이지*/}
-                <Route path="/newpost" element={<NewPost/>}/> {/*새 게시물 제작 페이지*/}
-                <Route path="/useredit" element={<UserEdit/>}/> {/*개인정보 수정 페이지*/}
-                <Route path="/party" element={<Party/>}/> {/*모임 페이지*/}
+                <Route path="/findid" element={<FindId/>}/>
+                <Route path="/findpw" element={<FindPw/>}/>
+                <Route path="/profile/:loginId" element={<Profile/>}/>
+                <Route path="/my-information" element={<MyInformation/>}/>
+                <Route path="/useredit" element={<UserEdit/>}/>
+                <Route path="/post-registration" element={<PostRegistration/>}/>
+                <Route path="/party/:postId" element={<PostDetail/>}/>
                 <Route path="/myparty" element={<MyParty/>}/> {/*내 모임 페이지*/}
                 <Route path="/manage" element={<Manage/>}/> {/*관리 페이지*/}
                 <Route path="/search" element={<Search/>}/> {/*검색 페이지*/}

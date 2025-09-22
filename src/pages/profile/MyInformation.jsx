@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../contexts/AuthContext";
 import Button from '../../components/common/Button';
 import api from "../../api/api";
-import "./MyPage.css";
+import "./MyInformation.css";
 
 const MyInformation = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const MyInformation = () => {
     const handleDeleteAccount = async () => {
         if (window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
             try {
-                await api.post('/delete');
+                await api.delete('/api/user/me');
                 alert("회원 탈퇴가 완료되었습니다.");
                 await logout();
                 navigate('/');
@@ -61,7 +61,6 @@ const MyInformation = () => {
             <div className="mypage-actions">
                 <Button onClick={() => navigate('/useredit')}>정보 수정</Button>
                 <Button onClick={() => navigate('/myparty')}>내 모임 보기</Button>
-                <Button onClick={handleLogout} className="logout-button">로그아웃</Button>
                 <Button onClick={handleDeleteAccount} className="delete-button">회원 탈퇴</Button>
             </div>
         </div>

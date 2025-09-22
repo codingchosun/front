@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import './Party.css';
-import api from "../api";
+import api from "../../api/api";
 
 const Party = () => {
     const { isLogin } = useAuth();

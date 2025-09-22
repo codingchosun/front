@@ -65,14 +65,14 @@ const Profile = () => {
             />
 
             <div className="profile-section">
-                <label className="profile-label">관심사</label>
+                <label className="profile-label">해시태그</label>
                 <div className="hashtags-container">
                     {profileData.hashtags && profileData.hashtags.length > 0 ? (
                         profileData.hashtags.map((tag, index) => (
-                            <span key={index} className="hashtag">{tag}</span>
+                            <span key={index} className="hashtag">{`#${tag}`}</span>
                         ))
                     ) : (
-                        <p className="no-hashtags">등록된 관심사가 없습니다.</p>
+                        <p className="no-hashtags">등록된 해시태그가 없습니다.</p>
                     )}
                 </div>
             </div>

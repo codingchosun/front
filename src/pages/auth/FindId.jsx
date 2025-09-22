@@ -26,7 +26,7 @@ const FindId = () => {
 
             if (findUserResponse.status === 200 && findUserResponse.data.success) {
                 console.log("아이디 찾기 응답:", findUserResponse);
-                setFoundId(findUserResponse.data.loginId);
+                setFoundId(findUserResponse.data.body.loginId);
             } else {
                 alert("일치하는 사용자를 찾을 수 없습니다. 이름과 이메일을 확인해주세요.");
             }

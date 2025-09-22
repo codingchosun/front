@@ -153,7 +153,7 @@ const PostDetail = () => {
     };
     const handleUserClick = (loginId) => navigate(`/profile/${loginId}`);
     const handleGoToVote = () => navigate('/votepage', {state: {postId, participants: post.participants}});
-    const handleGoToManage = () => navigate('/manage', {state: {postId}});
+    const handleGoToManage = () => navigate(`/party/${postId}/management`);
 
     if (isLoading) return <div className="party-message">로딩 중...</div>;
     if (error) return <div className="party-message error">{error}</div>;

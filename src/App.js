@@ -15,7 +15,7 @@ import Profile from "./pages/profile/Profile";
 import VotePage from "./pages/post/VotePage";
 import UserEdit from "./pages/profile/UserEdit";
 import PostDetail from "./pages/post/PostDetail";
-import Manage from "./pages/post/Manage";
+import PartyManagement from "./pages/post/PartyManagement";
 import Search from "./pages/post/Search";
 import GlobalNavigationBar from "./components/common/GlobalNavigationBar";
 
@@ -40,8 +40,8 @@ function App() {
                 <Route path="/useredit" element={<UserEdit/>}/>
                 <Route path="/post-registration" element={<PostRegistration/>}/>
                 <Route path="/party/:postId" element={<PostDetail/>}/>
-                <Route path="/myparty" element={<MyParty/>}/> {/*내 모임 페이지*/}
-                <Route path="/manage" element={<Manage/>}/> {/*관리 페이지*/}
+                <Route path="/my-party" element={<MyParty/>}/>
+                <Route path="/party/:postId/management" element={<PartyManagement/>}/>
                 <Route path="/search" element={<Search/>}/> {/*검색 페이지*/}
                 <Route path="/votepage" element={<VotePage/>}/> {/*투표 페이지*/}
             </Routes>

@@ -1,0 +1,101 @@
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.main-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.main-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.hashtag-section {
+    margin-bottom: 2.5rem;
+}
+
+.hashtag-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 1rem;
+}
+
+.hashtag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.hashtag-button {
+    background-color: #fff;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.hashtag-button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+/* --- --- */
+
+.main-new-post-button {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 2.5rem auto;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.main-posts-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.posts-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 0.8rem;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.posts-empty-message {
+    color: #777;
+    font-size: 1rem;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.loading-message {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 4rem;
+    color: #555;
+}

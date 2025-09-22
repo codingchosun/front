@@ -1,6 +1,6 @@
 // 방장 접근 권한 페이지
 import React, { useEffect, useState } from 'react';
-import { fetchMembersAndTemplates, validatePost } from '../api';
+import { fetchMembersAndTemplates, validatePost } from '../../api/api';
 
 const ValidatePost = ({ match }) => {
     const [members, setMembers] = useState([]);

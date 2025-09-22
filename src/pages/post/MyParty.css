@@ -1,0 +1,73 @@
+.my-party-container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Pretendard', sans-serif;
+}
+
+.my-party-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.post-section {
+    margin-bottom: 3rem;
+}
+
+.post-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #444;
+    border-bottom: 2px solid #eaeaea;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.party-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.party-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.party-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.party-item h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+    /* 제목이 너무 길 경우 ...으로 표시 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.party-item p {
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.error-message {
+    text-align: center;
+    color: #dc3545;
+    font-size: 1.1rem;
+    padding: 2rem;
+}

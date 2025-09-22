@@ -3,42 +3,42 @@ import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../../contexts/AuthContext";
 import Input from "../../../components/common/Input";
 import Button from "../../../components/common/Button";
-import axios from "axios";
+import api from "../../../api/api";
 import "./Login.css";
 
 const Login = () => {
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const {login} = useAuth();
+    const { updateUser } = useAuth();
 
-    //로그인 통신
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const formData = new FormData();
-        formData.append('loginId', loginId);
-        formData.append('password', password);
+        const loginRequest = {
+            loginId: loginId,
+            password: password
+        };
 
         try {
-            const response = await axios.post("/login", formData, {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            const loginResponse = await api.post("/api/login", loginRequest);
+
+            if (loginResponse.status === 200 && loginResponse.data.success) {
+                const userProfile = await updateUser(loginId);
+
+                console.log("로그인 응답:", loginResponse);
+                await updateUser(loginId);
+
+                if (userProfile && userProfile.nickname) {
+                    alert(userProfile.nickname + "님 환영합니다.");
+                } else {
+                    alert("로그인 성공! 환영합니다.");
                 }
-            });
 
-            //로그인이 성공할 경우
-            if (response.status === 200) {
-                console.log("RESPONSE:", response);
-                //TODO: 백엔드에 로그인된 사용자 확인 API 요청 -> response.data 예시 { loginId: '로그인아이디', nickname: '닉네임'}
-                login(response.data);
-
-                alert("로그인 성공!!");
-                navigate("/main");
+                navigate("/my-information");
             }
         } catch (error) {
-            alert("로그인이 실패하였습니다");
+            alert("로그인 처리에 문제가 발생하였습니다");
             console.error("로그인 오류:", error);
         }
     };

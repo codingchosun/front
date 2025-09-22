@@ -1,0 +1,178 @@
+.party-page-container {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.party-main-section {
+    flex: 3;
+}
+
+.party-sidebar-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.party-details, .party-edit-form {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.party-meta {
+    margin-bottom: 1.5rem;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.party-images {
+    margin-bottom: 1.5rem;
+}
+
+.party-image-item {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.party-content {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.party-hashtags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.hashtag {
+    background-color: #eef2f7;
+    color: #364a63;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+}
+
+.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #007bff;
+}
+
+.clickable:hover {
+    color: #0056b3;
+}
+
+.party-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.party-user-actions, .party-organizer-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.button-list, .button-join, .button-leave, .button-edit, .button-delete {
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.button-list:hover, .button-edit:hover {
+    background-color: #f0f0f0;
+}
+
+.button-join {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.button-join:hover {
+    background-color: #0056b3;
+}
+
+.button-leave, .button-delete {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.button-leave:hover, .button-delete:hover {
+    background-color: #c82333;
+}
+
+
+/* --- 사이드바 스타일 --- */
+.participants-container, .comments-container {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.participants-list, .comments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.participants-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.participants-list li:last-child {
+    border-bottom: none;
+}
+
+.comment-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-item p {
+    margin: 0.25rem 0 0 0;
+    color: #495057;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.comment-form button {
+    align-self: flex-end;
+    padding: 0.5rem 1rem;
+}

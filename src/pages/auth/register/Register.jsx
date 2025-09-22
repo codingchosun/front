@@ -38,21 +38,27 @@ const Register = () => {
         e.preventDefault();
 
         const fullEmail = `${userData.emailId}@${userData.emailDomain}`;
-        const transmissionData = {...userData, email: fullEmail};
-        delete transmissionData.emailId;
-        delete transmissionData.emailDomain;
+        const registerUserRequest = {
+            name: userData.name,
+            loginId: userData.loginId,
+            password: userData.password,
+            email: fullEmail,
+            genderCode: userData.genderCode,
+            birth: userData.birth,
+            nickname: userData.nickname
+        };
 
         try {
-            const response = await axios.post('/register', transmissionData);
+            const response = await axios.post('/api/register', registerUserRequest);
 
-            if (response.status === 200) {
-                console.log("회원가입 성공: ", response.data);
+            if (response.status === 201) {
+                console.log("회원 가입 성공: ", response.data);
                 alert("회원가입이 완료되었습니다 ");
                 navigate('/login');
             }
         } catch (error) {
             console.error("회원가입 실패: ", error);
-            alert("회원가입에 실패하였습니다. 다시 시도해주세요");
+            alert("회원가입에 실패하였습니다. 다시 시도하세요");
         }
     };
 
@@ -71,27 +77,30 @@ const Register = () => {
             <h2>회원가입</h2>
             <Input
                 label="이름"
+                id="name"
                 name="name"
                 value={userData.name}
                 onChange={handleChange}
-                placeholder="이름"
+                placeholder="2~16자 사이로 입력하세요"
             />
 
             <Input
                 label="아이디"
+                id="loginId"
                 name="loginId"
                 value={userData.loginId}
                 onChange={handleChange}
-                placeholder="2~14자 사이로 입력해주세요"
+                placeholder="6~16자 사이로 입력하세요"
             />
 
             <Input
                 label="비밀번호"
+                id="password"
                 type="password"
                 name="password"
                 value={userData.password}
                 onChange={handleChange}
-                placeholder="영문, 숫자를 포함한 6~14자로 입력해주세요"
+                placeholder="영문, 숫자를 포함한 6~14자로 입력하세요"
             />
 
             <div className="form-group">
@@ -113,7 +122,7 @@ const Register = () => {
                         name="emailDomain"
                         value={userData.emailDomain}
                         onChange={handleChange}
-                        placeholder="도메인"
+                        placeholder="이메일 도메인"
                     />
 
                     <select className="email-domain-select" onChange={handleDomainSelect}>
@@ -128,6 +137,7 @@ const Register = () => {
             <div className="form-row">
                 <Select
                     label="성별"
+                    id="genderCode"
                     name="genderCode"
                     value={userData.genderCode}
                     onChange={handleChange}
@@ -136,6 +146,7 @@ const Register = () => {
 
                 <Input
                     label="생년월일"
+                    id="birth"
                     type="date"
                     name="birth"
                     value={userData.birth}
@@ -145,9 +156,11 @@ const Register = () => {
 
             <Input
                 label="닉네임"
+                id="nickname"
                 name="nickname"
                 value={userData.nickname}
                 onChange={handleChange}
+                placeholder="2~12자로 입력하세요"
             />
 
             <div className="register-form__button-group">

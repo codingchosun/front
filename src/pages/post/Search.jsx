@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import "./Search.css";
-import cat from "../images/고양이.jpg";
-import api from "../api";
+
+import api from "../../api/api";
 
 // 검색창
-const SearchBar = ({ searchMeeting, setSearchMeeting }) => {
+const SearchBar = ({searchMeeting, setSearchMeeting}) => {
     const navigate = useNavigate();
 
     const handleSearch = () => {
-        navigate('/search', { state: { searchTerm: searchMeeting } });
+        navigate('/search', {state: {searchTerm: searchMeeting}});
     };
     return (
         <div className="main__search-bar">
@@ -39,7 +38,7 @@ const encodeHash = (searchTerm) => {
 const Search = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { searchTerm } = location.state || {};
+    const {searchTerm} = location.state || {};
     const [posts, setPosts] = useState([]);
     const [page] = useState(1);
     const [size] = useState(2);
@@ -49,7 +48,7 @@ const Search = () => {
         const fetchSearchResults = async () => {
             try {
                 const encodedSearchTerm = encodeHash(searchTerm);
-                const response = await api.get(`/posts/research?researchQuery=${encodedSearchTerm}&page=${page}&size=${size}`, {
+                const response = await api.get(`/posts/search?searchQuery=${encodedSearchTerm}&page=${page}&size=${size}`, {
                     headers: {
                         'Content-Type': 'application/json'
                     },
@@ -69,7 +68,7 @@ const Search = () => {
     }, [searchTerm]);
 
     const handlePostClick = (postId) => {
-        navigate('/party', { state: { postId } });
+        navigate('/party', {state: {postId}});
     };
 
     return (
@@ -87,11 +86,10 @@ const Search = () => {
                         {
                             posts.map((post) => (
                                 <div key={post.id} className="search__post" onClick={() => handlePostClick(post.id)}>
-                                    {post.path ? (
-                                        <img src={`${process.env.PUBLIC_URL}/postImage/${post.path}`} alt={post.title} className="main__post-thumbnail"/>
-                                    ) : (
-                                        < img src={cat} alt="default" className="main__post-default"/>
-                                    )}
+                                    post.path ? (
+                                        <img src={`${process.env.PUBLIC_URL}/postImage/${post.path}`} alt={post.title}
+                                             className="main__post-thumbnail"/>
+                                    )
                                     <div className="search__post-content">
                                         <div className="search__post-id">번호: {post.id}</div>
                                         <div className="search__post-title">제목: {cutContent(post.title, 8)}</div>

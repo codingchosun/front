@@ -33,13 +33,19 @@ const PostRegistration = () => {
             alert("제목, 내용, 해시태그를 모두 입력하세요.");
             return;
         }
+        const hashtagArray = hashtags.split(' ').filter(tag => tag !== ' ');
+        const hashtagsValid = hashtagArray.every(tag => tag.startsWith('#'));
+        if (!hashtagsValid) {
+            alert("모든 해시태그는 반드시 # 로 시작해야하고 공백으로 구분되야 합니다(예: #러닝 #독서")
+            return;
+        }
         setIsSubmitting(true);
 
         const postRegistrationRequest = {
             title: title,
             content: content,
             startTime: startTime.toISOString(),
-            hashtags: hashtags.split(' ').filter(tag => tag.startsWith('#')).map(tag => tag.substring(1))
+            hashtags: hashtagArray.map(tag => tag.substring(1))
         };
 
         try {

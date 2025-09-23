@@ -1,7 +1,6 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import './PostCard.css';
-import defaultImage from '../../assets/images/bridge.png';
 
 const truncateText = (text, maxLength) => {
     if (!text) return '';
@@ -12,18 +11,16 @@ const PostCard = ({post}) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        if (post?.id) {
-            navigate(`/party/${post.id}`);
+        if (post?.postId) {
+            navigate(`/party/${post.postId}`);
         }
     };
-
-    const imageUrl = post?.path ? `/images/${post.path}` : defaultImage;
 
     return (
         <div className="post-card" onClick={handleCardClick}>
             <div className="post-card-image-wrapper">
                 <img
-                    src={imageUrl || defaultImage}
+                    src={post?.url}
                     alt={post?.title}
                     className="post-card-image"
                 />

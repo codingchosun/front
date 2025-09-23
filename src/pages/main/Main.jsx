@@ -27,7 +27,8 @@ const HashtagList = ({title, hashtags}) => {
 
 const Main = () => {
     const {isLoggedIn} = useAuth();
-    const [posts, setPosts] = useState([]);
+    const [recommendedPosts, setRecommendedPosts] = useState([]);
+    const [generalPosts, setGeneralPosts] = useState([]);
     const [hashtags, setHashtags] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -41,14 +42,16 @@ const Main = () => {
                 const postResponse = await api.get('/api/posts');
                 if (postResponse.status === 200 && postResponse.data.success) {
                     const responseBody = postResponse.data.body;
-                    console.log("📌 전체 응답:", postResponse.data);
-                    console.log("📌 responseBody:", responseBody);
-
-                    const postsData = responseBody.posts?.content || responseBody.posts || [];
-                    console.log("📌 postsData:", postsData);
-                    setPosts(postsData);
-                    console.log("📌 hashtags:", responseBody.hashtags || []);
-                    setHashtags(responseBody.hashtags || []);
+                    const allPosts = responseBody.posts.content || [];
+                    console.log("log", allPosts)
+                    if (isLoggedIn) {
+                        setRecommendedPosts(allPosts.filter(post => post.recommend));
+                        setGeneralPosts(allPosts);
+                        setHashtags(responseBody.recommendHashtags || []);
+                    } else {
+                        setGeneralPosts(allPosts);
+                        setHashtags(responseBody.randomHashtags || []);
+                    }
                 }
             } catch (err) {
                 console.error('게시물을 불러오는 중 오류 발생:', err);
@@ -83,12 +86,23 @@ const Main = () => {
             )}
 
             <div className="main-posts-layout">
+                {isLoggedIn && (
+                    <section className="posts-section">
+                        <h2>회원님을 위한 추천 모임</h2>
+                        <div className="posts-grid">
+                            {recommendedPosts.length > 0 ? (
+                                recommendedPosts.map(post => <PostCard key={post.postId} post={post}/>)
+                            ) : (
+                                <p className="posts-empty-message">현재 추천 가능한 모임이 없습니다.</p>
+                            )}
+                        </div>
+                    </section>
+                )}
                 <section className="posts-section">
                     <h2>전체 모임</h2>
-
                     <div className="posts-grid">
-                        {posts.length > 0 ? (
-                            posts.map(post => <PostCard key={post.id} post={post}/>)
+                        {generalPosts.length > 0 ? (
+                            generalPosts.map(post => <PostCard key={post.postId} post={post}/>)
                         ) : (
                             <p className="posts-empty-message">아직 등록된 모임이 없습니다.</p>
                         )}

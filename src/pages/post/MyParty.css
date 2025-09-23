@@ -52,7 +52,6 @@
     font-weight: 600;
     color: #333;
     margin: 0 0 0.5rem 0;
-    /* 제목이 너무 길 경우 ...으로 표시 */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

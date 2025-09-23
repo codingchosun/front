@@ -12,11 +12,11 @@ import MyInformation from "./pages/profile/MyInformation";
 import MyParty from "./pages/post/MyParty";
 import PostRegistration from "./pages/post/PostRegistration";
 import Profile from "./pages/profile/Profile";
-import VotePage from "./pages/post/VotePage";
+import EvaluationUser from "./pages/post/EvaluationUser";
 import UserEdit from "./pages/profile/UserEdit";
 import PostDetail from "./pages/post/PostDetail";
 import PartyManagement from "./pages/post/PartyManagement";
-import Search from "./pages/post/Search";
+import PostSearch from "./pages/post/PostSearch";
 import GlobalNavigationBar from "./components/common/GlobalNavigationBar";
 
 import api from "./api/api";
@@ -42,8 +42,8 @@ function App() {
                 <Route path="/party/:postId" element={<PostDetail/>}/>
                 <Route path="/my-party" element={<MyParty/>}/>
                 <Route path="/party/:postId/management" element={<PartyManagement/>}/>
-                <Route path="/search" element={<Search/>}/> {/*검색 페이지*/}
-                <Route path="/votepage" element={<VotePage/>}/> {/*투표 페이지*/}
+                <Route path="/search" element={<PostSearch/>}/>
+                <Route path="/evaluation/:postId" element={<EvaluationUser/>}/>
             </Routes>
         </AuthProvider>
     );

@@ -1,0 +1,104 @@
+.evaluation-page-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.evaluation-page-container h1 {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.evaluation-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 2.5rem;
+}
+
+.evaluation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.evaluation-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.participant-nickname {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.template-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.template-button {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.template-button:hover {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+/* 선택된 템플릿 버튼 스타일 */
+.template-button.selected.positive {
+    background-color: #28a798;
+    color: white;
+    border-color: #28a781;
+}
+
+.template-button.selected.negative {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.evaluation-page-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.submit-button, .cancel-button {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.submit-button {
+    background-color: #007bff;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.cancel-button {
+    background-color: #6c757d;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}

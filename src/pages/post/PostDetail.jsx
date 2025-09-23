@@ -37,8 +37,6 @@ const PostDetail = () => {
             const response = await api.get(`/api/posts/${postId}`);
             if (response.data.success) {
                 setPost(response.data.body);
-            } else {
-                throw new Error('게시물 정보를 가져오지 못했습니다.');
             }
         } catch (err) {
             setError('게시물을 불러오는 중 오류가 발생했습니다.');
@@ -132,9 +130,9 @@ const PostDetail = () => {
                     headers: {'Content-Type': 'multipart/form-data'}
                 });
             }
-
             alert('게시물이 성공적으로 수정되었습니다.');
             setIsEditing(false);
+
             fetchPostDetails();
         } catch (err) {
             alert('게시물 수정 중 오류가 발생했습니다.');
@@ -152,12 +150,12 @@ const PostDetail = () => {
         }
     };
     const handleUserClick = (loginId) => navigate(`/profile/${loginId}`);
-    const handleGoToVote = () => navigate('/votepage', {state: {postId, participants: post.participants}});
     const handleGoToManage = () => navigate(`/party/${postId}/management`);
 
     if (isLoading) return <div className="party-message">로딩 중...</div>;
     if (error) return <div className="party-message error">{error}</div>;
     if (!post) return <div className="party-message">게시물 정보를 찾을 수 없습니다.</div>;
+    const isExpired = post.stateCode === 'INACTIVE';
 
     const isOrganizer = user && user.loginId === post.loginId;
     const isParticipant = (post.participants || []).some(p => p.loginId === user?.loginId);
@@ -223,8 +221,10 @@ const PostDetail = () => {
                         <h1>{post.title}</h1>
 
                         <div className="party-meta">
-                            <p><strong>작성자:</strong> <span className="clickable"
-                                                           onClick={() => handleUserClick(post.loginId)}>{post.nickname}</span>
+                            <p><strong>작성자:</strong>
+                                <span className="clickable"
+                                      onClick={() => handleUserClick(post.loginId)}>{post.nickname}
+                                </span>
                             </p>
                             <p><strong>모임 시간:</strong>{new Date(post.startTime).toLocaleString()}</p>
                         </div>
@@ -244,10 +244,10 @@ const PostDetail = () => {
                         <div className="party-buttons-container">
                             <button onClick={() => navigate('/main')} className="button-list">목록</button>
                             <div className="party-user-actions">
-                                {isLoggedIn && !isParticipant && !isOrganizer && (
+                                {isLoggedIn && !isExpired && !isParticipant && !isOrganizer && (
                                     <button onClick={handleParticipant} className="button-join">참가</button>
                                 )}
-                                {isLoggedIn && isParticipant && !isOrganizer && (
+                                {isLoggedIn && !isExpired && isParticipant && !isOrganizer && (
                                     <button onClick={handleExit} className="button-leave">탈퇴</button>
                                 )}
                                 {isOrganizer && (
@@ -272,9 +272,10 @@ const PostDetail = () => {
                 </div>
 
                 <div className="party-action-buttons">
-                    {isLoggedIn && isParticipant && !isOrganizer &&
-                        <button onClick={handleGoToVote} className="button-vote">다른 유저 평가하기</button>}
-                    {isOrganizer && <button onClick={handleGoToManage} className="button-manage">참가자 관리</button>}
+                    {isLoggedIn && isParticipant && isExpired &&
+                        <button onClick={() => navigate(`/Evaluation/${postId}`)} className="button-vote">평가</button>}
+                    {isOrganizer && !isExpired &&
+                        <button onClick={handleGoToManage} className="button-manage">참가자 관리</button>}
                 </div>
 
                 <div className="comments-container">

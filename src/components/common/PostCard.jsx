@@ -12,18 +12,18 @@ const PostCard = ({post}) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        if (post?.id) {
-            navigate(`/party/${post.id}`);
+        if (post?.postId) {
+            navigate(`/party/${post.postId}`);
         }
     };
 
-    const imageUrl = post?.path ? `/images/${post.path}` : defaultImage;
+    const imageUrl = post?.url || defaultImage;
 
     return (
         <div className="post-card" onClick={handleCardClick}>
             <div className="post-card-image-wrapper">
                 <img
-                    src={imageUrl || defaultImage}
+                    src={imageUrl}
                     alt={post?.title}
                     className="post-card-image"
                 />

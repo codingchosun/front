@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../../contexts/AuthContext";
 import Button from '../../components/common/Button';
@@ -8,12 +8,26 @@ import "./MyInformation.css";
 const MyInformation = () => {
     const navigate = useNavigate();
     const {user, logout} = useAuth();
+    const [myInfo, setMyInfo] = useState(null);
 
-    const handleLogout = async () => {
-        await logout();
-        alert('로그아웃 되었습니다.');
-        navigate('/login');
-    };
+    useEffect(() => {
+        const fetchMyInfo = async () => {
+            if (!user?.loginId) {
+                return;
+            }
+
+            try {
+                const response = await api.get(`/api/profile/${user.loginId}`);
+                if (response.data.success) {
+                    setMyInfo(response.data.body);
+                }
+            } catch (err) {
+                console.error("내 정보 업데이트에 실패하였습니다", err);
+            }
+        }
+
+        fetchMyInfo();
+    }, [user?.loginId]);
 
     const handleDeleteAccount = async () => {
         if (window.confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
@@ -29,7 +43,7 @@ const MyInformation = () => {
         }
     };
 
-    if (!user) {
+    if (!myInfo) {
         return <div className="mypage-error">사용자 정보를 찾을 수 없습니다. 로그인이 필요합니다.</div>;
     }
 
@@ -39,28 +53,28 @@ const MyInformation = () => {
             <div className="mypage-info">
                 <div className="info-item">
                     <span className="info-label">이름</span>
-                    <span className="info-value">{user.name}</span>
+                    <span className="info-value">{myInfo.name}</span>
                 </div>
 
                 <div className="info-item">
                     <span className="info-label">닉네임</span>
-                    <span className="info-value">{user.nickname}</span>
+                    <span className="info-value">{myInfo.nickname}</span>
                 </div>
 
                 <div className="info-item">
                     <span className="info-label">이메일</span>
-                    <span className="info-value">{user.email}</span>
+                    <span className="info-value">{myInfo.email}</span>
                 </div>
 
                 <div className="info-item">
                     <span className="info-label">매너 점수</span>
-                    <span className="info-value">{user.score}점</span>
+                    <span className="info-value">{myInfo.score}점</span>
                 </div>
             </div>
 
             <div className="mypage-actions">
                 <Button onClick={() => navigate('/useredit')}>정보 수정</Button>
-                <Button onClick={() => navigate('/myparty')}>내 모임 보기</Button>
+                <Button onClick={() => navigate('/my-party')}>내 모임 보기</Button>
                 <Button onClick={handleDeleteAccount} className="delete-button">회원 탈퇴</Button>
             </div>
         </div>
